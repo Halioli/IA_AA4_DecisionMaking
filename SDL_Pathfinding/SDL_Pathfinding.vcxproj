@@ -146,6 +146,8 @@
     <ClCompile Include="PathFindingGraph.cpp" />
     <ClCompile Include="PathFollowing.cpp" />
     <ClCompile Include="SalesmanProblem.cpp" />
+    <ClCompile Include="SceneFSM.cpp" />
+    <ClCompile Include="SceneGOAP.cpp" />
     <ClCompile Include="ScenePathFindingAA3.cpp" />
     <ClCompile Include="ScenePathFindingMouse.cpp" />
     <ClCompile Include="SDL_SimpleApp.cpp" />
@@ -170,6 +172,8 @@
     <ClInclude Include="PathFollowing.h" />
     <ClInclude Include="SalesmanProblem.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneFSM.h" />
+    <ClInclude Include="SceneGOAP.h" />
     <ClInclude Include="ScenePathFindingAA3.h" />
     <ClInclude Include="ScenePathFindingMouse.h" />
     <ClInclude Include="SDL_SimpleApp.h" />
@@ -183,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\maze.csv" />
+    <None Include="..\res\maze_rooms.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

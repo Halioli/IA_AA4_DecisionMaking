@@ -10,4 +10,5 @@ FSMState* FSMState_Patrol::Update(Agent* agent, float dTime)
 	// ...
 	//if (timeToChange) return newState;
 	//else return nullptr;
+	return nullptr;
 }

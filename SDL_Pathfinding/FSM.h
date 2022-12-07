@@ -5,6 +5,7 @@
 
 class FSM : public DecisionMakingAlgorithm
 {
+public:
 	FSMState* currentState;
 
 	void Update(Agent* agent, float dTime) override;

@@ -1,6 +1,6 @@
 #include "FSM.h"
 
-void FSM::Update(Agent* agent, float dTime)
+void FSM::Update(Agent* agent, float dTime) 
 {
 	FSMState* newState = currentState->Update(agent, dTime);
 	

@@ -6,6 +6,7 @@
 #include "Path.h"
 #include "Vector2D.h"
 #include "utils.h"
+#include "FSM.h"
 
 class Agent
 {

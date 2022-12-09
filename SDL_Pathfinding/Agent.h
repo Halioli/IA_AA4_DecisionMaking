@@ -7,6 +7,7 @@
 #include "Vector2D.h"
 #include "utils.h"
 #include "FSM.h"
+#include "DecisionMakingAlgorithm.h"
 
 class Agent
 {
@@ -40,6 +41,7 @@ private:
 	int sprite_h;
 
 public:
+	DecisionMakingAlgorithm decisionMakingAlgorithm;
 	bool calculatedAlgorithm = false;
 
 	Agent();

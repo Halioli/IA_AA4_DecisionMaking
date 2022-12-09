@@ -40,8 +40,9 @@ private:
 	int sprite_w;
 	int sprite_h;
 
-public:
 	DecisionMakingAlgorithm decisionMakingAlgorithm;
+
+public:
 	bool calculatedAlgorithm = false;
 
 	Agent();
@@ -65,4 +66,5 @@ public:
 	void update(float dtime, SDL_Event *event);
 	void draw();
 	bool loadSpriteTexture(char* filename, int num_frames = 1);
+	void SetDecisionMakingAlgorithm(DecisionMakingAlgorithm newDecisionMakingAlgorithm);
 };

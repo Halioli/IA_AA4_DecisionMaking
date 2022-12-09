@@ -196,3 +196,8 @@ bool Agent::loadSpriteTexture(char* filename, int _num_frames)
 
 	return true;
 }
+
+void Agent::SetDecisionMakingAlgorithm(DecisionMakingAlgorithm newDecisionMakingAlgorithm)
+{
+	decisionMakingAlgorithm = newDecisionMakingAlgorithm;
+}

@@ -9,6 +9,7 @@
 #include "Seek.h"
 #include "PathFollowing.h"
 #include "Grid.h"
+#include "FSM.h"
 
 class SceneFSM :
 	public Scene
@@ -25,7 +26,9 @@ private:
 
 	Grid *maze;
 	bool draw_grid;
-		
+	
+	FSM algorithmFSM;
+
 	void drawMaze();
 	void drawCoin();
 	SDL_Texture *background_texture;

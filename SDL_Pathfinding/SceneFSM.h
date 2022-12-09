@@ -10,6 +10,8 @@
 #include "PathFollowing.h"
 #include "Grid.h"
 #include "FSM.h"
+#include "GreedyBFS.h"
+#include "PathFindingGraph.h"
 
 class SceneFSM :
 	public Scene
@@ -20,6 +22,7 @@ public:
 	void update(float dtime, SDL_Event *event);
 	void draw();
 	const char* getTitle();
+
 private:
 	std::vector<Agent*> agents;
 	Vector2D coinPosition;
@@ -29,10 +32,18 @@ private:
 	
 	FSM algorithmFSM;
 
+	int _numberOfEnemies = 0;
+	std::vector<Agent*> enemyAgents;
+
+	GreedyBFS* greedyBFS;
+	PathFindingGraph* graph;
+
 	void drawMaze();
 	void drawCoin();
 	SDL_Texture *background_texture;
 	SDL_Texture *coin_texture;
 	bool loadTextures(char* filename_bg, char* filename_coin);
 
+	void DoGreedyBFS(Agent* _agent);
+	void InitEnemies();
 };

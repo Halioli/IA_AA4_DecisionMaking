@@ -9,6 +9,9 @@ SceneFSM::SceneFSM()
 
 	loadTextures("../res/maze.png", "../res/coin.png");
 
+	graph = new PathFindingGraph(maze->getNumCellX(), maze->getNumCellY(), maze);
+	greedyBFS = new GreedyBFS();
+
 	srand((unsigned int)time(NULL));
 
 	Agent *agent = new Agent;
@@ -51,6 +54,11 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 	case SDL_KEYDOWN:
 		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
 			draw_grid = !draw_grid;
+		else if (event->key.keysym.scancode == SDL_SCANCODE_Z)
+		{
+			_numberOfEnemies = 2;
+			InitEnemies();
+		}
 		break;
 	case SDL_MOUSEMOTION:
 	case SDL_MOUSEBUTTONDOWN:
@@ -76,6 +84,27 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 			coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	}
 	
+
+	// ENEMIES
+	for (int i = 0; i < enemyAgents.size(); i++)
+	{
+		enemyAgents[i]->update(dtime, event);
+
+		if ((enemyAgents[i]->getCurrentTargetIndex() == -1) && (maze->pix2cell(enemyAgents[i]->getPosition()) == maze->pix2cell(enemyAgents[i]->getTarget())))
+		{
+			enemyAgents[i]->setTarget(Vector2D(-1, -1));
+			while ((!maze->isValidCell(enemyAgents[i]->getTarget())) || (Vector2D::Distance(enemyAgents[i]->getTarget(), maze->pix2cell(enemyAgents[i]->getPosition())) < 3))
+				enemyAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
+
+			enemyAgents[i]->calculatedAlgorithm = false;
+		}
+
+		if (!enemyAgents[i]->calculatedAlgorithm)
+		{
+			DoGreedyBFS(enemyAgents[i]);
+			enemyAgents[i]->calculatedAlgorithm = true;
+		}
+	}
 }
 
 void SceneFSM::draw()
@@ -96,7 +125,15 @@ void SceneFSM::draw()
 		}
 	}
 
+	// We draw the agents:
+		// Monke:
 	agents[0]->draw();
+
+		// Zombos:
+	for (Agent* a : enemyAgents)
+	{
+		a->draw();
+	}
 }
 
 const char* SceneFSM::getTitle()
@@ -162,4 +199,80 @@ bool SceneFSM::loadTextures(char* filename_bg, char* filename_coin)
 		SDL_FreeSurface(image);
 
 	return true;
+}
+
+void SceneFSM::DoGreedyBFS(Agent* _agent)
+{
+	_agent->clearPath();
+
+	// call greedyBFS
+	greedyBFS->startingNode = graph->GetNodeByPosition(maze->pix2cell(_agent->getPosition()));
+	greedyBFS->SetGoalPosition(_agent->getTarget());
+
+	greedyBFS->GreedyBFSAlgorithm(graph);
+
+	//agents[0]->addPathPoint //<-- add each path node here transformed into cell2pix(cell)
+	for (auto point : greedyBFS->pathToGoal)
+	{
+		_agent->addPathPoint(maze->cell2pix(point->GetPos()));
+	}
+}
+
+void SceneFSM::InitEnemies() 
+{
+	int value = enemyAgents.size();
+	int value2 = _numberOfEnemies;
+
+	if (enemyAgents.size() >= _numberOfEnemies)
+	{
+		Vector2D rand_cell(-1, -1);
+
+		for (int i = 0; i < enemyAgents.size(); i++)
+		{
+			// randomize starting position
+			while (!maze->isValidCell(rand_cell))
+				rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
+
+			enemyAgents[i]->setPosition(maze->cell2pix(rand_cell));
+
+			// We reset the value of "rand_cell":
+			rand_cell = Vector2D(-1, -1);
+
+			// randomize enemy target
+			enemyAgents[i]->setTarget(Vector2D(-1, -1));
+			while ((!maze->isValidCell(enemyAgents[i]->getTarget())) || (Vector2D::Distance(enemyAgents[i]->getTarget(), maze->pix2cell(enemyAgents[i]->getPosition())) < 3))
+				enemyAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
+		}
+
+		return;
+	}
+
+	for (int i = 0; i < _numberOfEnemies; i++)
+	{
+		Agent* enemyAgent = new Agent;
+		enemyAgent->loadSpriteTexture("../res/zombie1.png", 8);
+		enemyAgent->setBehavior(new PathFollowing);
+		enemyAgent->setTarget(Vector2D(-20, -20));
+		enemyAgents.push_back(enemyAgent);
+	}
+
+	Vector2D rand_cell(-1, -1);
+
+	for (int i = 0; i < enemyAgents.size(); i++)
+	{
+		// randomize starting position
+		while (!maze->isValidCell(rand_cell))
+			rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
+
+		enemyAgents[i]->setPosition(maze->cell2pix(rand_cell));
+		enemyAgents[i]->SetDecisionMakingAlgorithm(algorithmFSM);
+
+		// We reset the value of "rand_cell":
+		rand_cell = Vector2D(-1, -1);
+
+		// randomize enemy target
+		enemyAgents[i]->setTarget(Vector2D(-1, -1));
+		while ((!maze->isValidCell(enemyAgents[i]->getTarget())) || (Vector2D::Distance(enemyAgents[i]->getTarget(), maze->pix2cell(enemyAgents[i]->getPosition())) < 3))
+			enemyAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
+	}
 }

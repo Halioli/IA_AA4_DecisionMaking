@@ -8,6 +8,7 @@
 #include "utils.h"
 #include "FSM.h"
 #include "DecisionMakingAlgorithm.h"
+#include "AgentPointer.h"
 
 class Agent
 {
@@ -40,10 +41,11 @@ private:
 	int sprite_w;
 	int sprite_h;
 
-	DecisionMakingAlgorithm decisionMakingAlgorithm;
+	bool hasWeapon = false;
 
 public:
 	bool calculatedAlgorithm = false;
+	DecisionMakingAlgorithm decisionMakingAlgorithm;
 
 	Agent();
 	~Agent();

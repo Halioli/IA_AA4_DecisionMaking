@@ -6,9 +6,10 @@
 #include "Path.h"
 #include "Vector2D.h"
 #include "utils.h"
-#include "FSM.h"
 #include "DecisionMakingAlgorithm.h"
 #include "AgentPointer.h"
+
+class FSM;
 
 class Agent
 {
@@ -21,12 +22,13 @@ public:
 		virtual void applySteeringForce(Agent *agent, float dtime) {};
 	};
 private:
+	// Movement:
 	SteeringBehavior *steering_behaviour;
-	Vector2D position;
+	Vector2D position; // location in map (needed in FSM_State)
+	Vector2D target; // target in map (needed in FSM_State)
 	Vector2D velocity;
-	Vector2D target;
 
-	// Pathfinding
+	// Pathfinding:
 	Path path;
 	int currentTargetIndex;
 
@@ -44,6 +46,9 @@ private:
 	bool hasWeapon = false;
 
 public:
+	// FSM:
+	FSM* _agentFSM;
+
 	bool calculatedAlgorithm = false;
 	DecisionMakingAlgorithm decisionMakingAlgorithm;
 

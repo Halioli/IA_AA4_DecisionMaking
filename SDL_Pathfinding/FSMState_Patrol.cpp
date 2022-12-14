@@ -1,5 +1,6 @@
 #include "FSMState_Patrol.h"
 #include <iostream>
+#include "Agent.h"
 
 void FSMState_Patrol::Enter(Agent* agent, float dTime)
 {
@@ -12,27 +13,21 @@ void FSMState_Patrol::Enter(Agent* agent, float dTime)
 FSMState* FSMState_Patrol::Update(Agent* agent, float dTime)
 {
 	// TODO
-	 
-		// if (currentPos == targetPos)
-			// New position code
-		//else
-			//	Calculate new random pos
+
+	if (agent->getPosition() == agent->getTarget())
+		agent->setTarget(rand()*);
+	else
+	{
+		int i = 0;
+	}
+		//	Calculate new random pos
 		
-	 // if(target->inRange())
+	// if(target->inRange())
 		// if(target->hasGun())
 			//return FSMState_Evade;
 		//else 
 			//return FSMState_Chasé;
 	// else
-		//return nullptr;
-
-
-	// Agent deploy state actions/movement
-	// ...
-	// Transitions between states are checked here!
-	// ...
-	//if (timeToChange) return newState;
-	//else return nullptr;
 	return nullptr;
 }
 

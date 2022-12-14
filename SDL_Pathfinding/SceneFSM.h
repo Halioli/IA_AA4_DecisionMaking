@@ -33,7 +33,7 @@ private:
 	FSM algorithmFSM;
 
 	int _numberOfEnemies = 0;
-	std::vector<Agent*> enemyAgents;
+	std::vector<Agent*> zomboAgents;
 
 	GreedyBFS* greedyBFS;
 	PathFindingGraph* graph;

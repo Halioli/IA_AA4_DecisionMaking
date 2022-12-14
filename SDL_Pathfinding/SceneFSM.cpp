@@ -31,7 +31,6 @@ SceneFSM::SceneFSM()
 	coinPosition = Vector2D(-1,-1);
 	while ((!maze->isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, rand_cell)<3))
 		coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
-
 }
 
 SceneFSM::~SceneFSM()
@@ -85,24 +84,28 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 	}
 	
 
-	// ENEMIES
-	for (int i = 0; i < enemyAgents.size(); i++)
+	// ENEMIES:
+	for (int i = 0; i < zomboAgents.size(); i++)
 	{
-		enemyAgents[i]->update(dtime, event);
+		// FSM State Logic:
+		zomboAgents[i]->_agentFSM->Update(zomboAgents[i], dtime);
 
-		if ((enemyAgents[i]->getCurrentTargetIndex() == -1) && (maze->pix2cell(enemyAgents[i]->getPosition()) == maze->pix2cell(enemyAgents[i]->getTarget())))
+		// FSM Movement Logic:
+		zomboAgents[i]->update(dtime, event);
+
+		if ((zomboAgents[i]->getCurrentTargetIndex() == -1) && (maze->pix2cell(zomboAgents[i]->getPosition()) == maze->pix2cell(zomboAgents[i]->getTarget())))
 		{
-			enemyAgents[i]->setTarget(Vector2D(-1, -1));
-			while ((!maze->isValidCell(enemyAgents[i]->getTarget())) || (Vector2D::Distance(enemyAgents[i]->getTarget(), maze->pix2cell(enemyAgents[i]->getPosition())) < 3))
-				enemyAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
+			zomboAgents[i]->setTarget(Vector2D(-1, -1));
+			while ((!maze->isValidCell(zomboAgents[i]->getTarget())) || (Vector2D::Distance(zomboAgents[i]->getTarget(), maze->pix2cell(zomboAgents[i]->getPosition())) < 3))
+				zomboAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
 
-			enemyAgents[i]->calculatedAlgorithm = false;
+			zomboAgents[i]->calculatedAlgorithm = false;
 		}
 
-		if (!enemyAgents[i]->calculatedAlgorithm)
+		if (!zomboAgents[i]->calculatedAlgorithm)
 		{
-			DoGreedyBFS(enemyAgents[i]);
-			enemyAgents[i]->calculatedAlgorithm = true;
+			DoGreedyBFS(zomboAgents[i]);
+			zomboAgents[i]->calculatedAlgorithm = true;
 		}
 	}
 }
@@ -130,7 +133,7 @@ void SceneFSM::draw()
 	agents[0]->draw();
 
 		// Zombos:
-	for (Agent* a : enemyAgents)
+	for (Agent* a : zomboAgents)
 	{
 		a->draw();
 	}
@@ -220,28 +223,28 @@ void SceneFSM::DoGreedyBFS(Agent* _agent)
 
 void SceneFSM::InitEnemies() 
 {
-	int value = enemyAgents.size();
+	int value = zomboAgents.size();
 	int value2 = _numberOfEnemies;
 
-	if (enemyAgents.size() >= _numberOfEnemies)
+	if (zomboAgents.size() >= _numberOfEnemies)
 	{
 		Vector2D rand_cell(-1, -1);
 
-		for (int i = 0; i < enemyAgents.size(); i++)
+		for (int i = 0; i < zomboAgents.size(); i++)
 		{
 			// randomize starting position
 			while (!maze->isValidCell(rand_cell))
 				rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 
-			enemyAgents[i]->setPosition(maze->cell2pix(rand_cell));
+			zomboAgents[i]->setPosition(maze->cell2pix(rand_cell));
 
 			// We reset the value of "rand_cell":
 			rand_cell = Vector2D(-1, -1);
 
 			// randomize enemy target
-			enemyAgents[i]->setTarget(Vector2D(-1, -1));
-			while ((!maze->isValidCell(enemyAgents[i]->getTarget())) || (Vector2D::Distance(enemyAgents[i]->getTarget(), maze->pix2cell(enemyAgents[i]->getPosition())) < 3))
-				enemyAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
+			zomboAgents[i]->setTarget(Vector2D(-1, -1));
+			while ((!maze->isValidCell(zomboAgents[i]->getTarget())) || (Vector2D::Distance(zomboAgents[i]->getTarget(), maze->pix2cell(zomboAgents[i]->getPosition())) < 3))
+				zomboAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
 		}
 
 		return;
@@ -253,26 +256,26 @@ void SceneFSM::InitEnemies()
 		enemyAgent->loadSpriteTexture("../res/zombie1.png", 8);
 		enemyAgent->setBehavior(new PathFollowing);
 		enemyAgent->setTarget(Vector2D(-20, -20));
-		enemyAgents.push_back(enemyAgent);
+		zomboAgents.push_back(enemyAgent);
 	}
 
 	Vector2D rand_cell(-1, -1);
 
-	for (int i = 0; i < enemyAgents.size(); i++)
+	for (int i = 0; i < zomboAgents.size(); i++)
 	{
 		// randomize starting position
 		while (!maze->isValidCell(rand_cell))
 			rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 
-		enemyAgents[i]->setPosition(maze->cell2pix(rand_cell));
-		enemyAgents[i]->SetDecisionMakingAlgorithm(algorithmFSM);
+		zomboAgents[i]->setPosition(maze->cell2pix(rand_cell));
+		zomboAgents[i]->SetDecisionMakingAlgorithm(algorithmFSM);
 
 		// We reset the value of "rand_cell":
 		rand_cell = Vector2D(-1, -1);
 
 		// randomize enemy target
-		enemyAgents[i]->setTarget(Vector2D(-1, -1));
-		while ((!maze->isValidCell(enemyAgents[i]->getTarget())) || (Vector2D::Distance(enemyAgents[i]->getTarget(), maze->pix2cell(enemyAgents[i]->getPosition())) < 3))
-			enemyAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
+		zomboAgents[i]->setTarget(Vector2D(-1, -1));
+		while ((!maze->isValidCell(zomboAgents[i]->getTarget())) || (Vector2D::Distance(zomboAgents[i]->getTarget(), maze->pix2cell(zomboAgents[i]->getPosition())) < 3))
+			zomboAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
 	}
 }

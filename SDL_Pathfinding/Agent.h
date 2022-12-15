@@ -7,7 +7,10 @@
 #include "Vector2D.h"
 #include "utils.h"
 #include "DecisionMakingAlgorithm.h"
-#include "AgentPointer.h"
+#include "AgentStates.h" // Valorar si deixar-lo com abans, borrar-lo o no canviar-lo?
+#include "FSMState_Chase.h" // Valorar què fem?
+#include "FSMState_Patrol.h" // Valorar què fem?
+#include "FSMState_Evade.h" // Valorar què fem?
 
 class FSM;
 
@@ -48,6 +51,8 @@ private:
 public:
 	// FSM:
 	FSM* _agentFSM;
+
+	AgentStates agentStates;
 
 	bool calculatedAlgorithm = false;
 	DecisionMakingAlgorithm decisionMakingAlgorithm;

@@ -88,16 +88,14 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 	for (int i = 0; i < zomboAgents.size(); i++)
 	{
 		// FSM State Logic:
-		zomboAgents[i]->_agentFSM->Update(zomboAgents[i], dtime);
+		zomboAgents[i]->_agentFSM->Update(zomboAgents[i], dtime, GetRandomGridPos());
 
 		// FSM Movement Logic:
 		zomboAgents[i]->update(dtime, event);
 
 		if ((zomboAgents[i]->getCurrentTargetIndex() == -1) && (maze->pix2cell(zomboAgents[i]->getPosition()) == maze->pix2cell(zomboAgents[i]->getTarget())))
 		{
-			zomboAgents[i]->setTarget(Vector2D(-1, -1));
-			while ((!maze->isValidCell(zomboAgents[i]->getTarget())) || (Vector2D::Distance(zomboAgents[i]->getTarget(), maze->pix2cell(zomboAgents[i]->getPosition())) < 3))
-				zomboAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
+			zomboAgents[i]->setTarget(GetRandomGridPos());
 
 			zomboAgents[i]->calculatedAlgorithm = false;
 		}
@@ -159,7 +157,9 @@ void SceneFSM::drawMaze()
 				coords = maze->cell2pix(Vector2D((float)i, (float)j)) - Vector2D((float)CELL_SIZE / 2, (float)CELL_SIZE / 2);
 				rect = { (int)coords.x, (int)coords.y, CELL_SIZE, CELL_SIZE };
 				SDL_RenderFillRect(TheApp::Instance()->getRenderer(), &rect);
-			} else {
+			} 
+			else 
+			{
 				// Do not draw if it is not necessary (bg is already black)
 			}
 					
@@ -250,12 +250,17 @@ void SceneFSM::InitEnemies()
 		return;
 	}
 
+
 	for (int i = 0; i < _numberOfEnemies; i++)
 	{
 		Agent* enemyAgent = new Agent;
 		enemyAgent->loadSpriteTexture("../res/zombie1.png", 8);
 		enemyAgent->setBehavior(new PathFollowing);
 		enemyAgent->setTarget(Vector2D(-20, -20));
+
+		enemyAgent->_agentFSM = new FSM();
+		enemyAgent->_agentFSM->currentState = new FSMState_Patrol();
+
 		zomboAgents.push_back(enemyAgent);
 	}
 
@@ -274,8 +279,16 @@ void SceneFSM::InitEnemies()
 		rand_cell = Vector2D(-1, -1);
 
 		// randomize enemy target
-		zomboAgents[i]->setTarget(Vector2D(-1, -1));
-		while ((!maze->isValidCell(zomboAgents[i]->getTarget())) || (Vector2D::Distance(zomboAgents[i]->getTarget(), maze->pix2cell(zomboAgents[i]->getPosition())) < 3))
-			zomboAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
+		zomboAgents[i]->setTarget(GetRandomGridPos());
 	}
+}
+
+Vector2D SceneFSM::GetRandomGridPos()
+{
+	Vector2D randomPos = Vector2D(-1.0f, -1.0f);
+
+	while (!maze->isValidCell(randomPos) || (Vector2D::Distance(randomPos, maze->pix2cell(randomPos))) < 3)
+		randomPos = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
+
+	return randomPos;
 }

@@ -132,7 +132,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
-    <ClCompile Include="AgentPointer.cpp" />
     <ClCompile Include="AStar.cpp" />
     <ClCompile Include="CompositeWeightedSum.cpp" />
     <ClCompile Include="BFS.cpp" />
@@ -164,7 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
-    <ClInclude Include="AgentPointer.h" />
+    <ClInclude Include="AgentStates.h" />
     <ClInclude Include="AStar.h" />
     <ClInclude Include="CompositeWeightedSum.h" />
     <ClInclude Include="BFS.h" />

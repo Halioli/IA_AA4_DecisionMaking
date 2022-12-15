@@ -22,6 +22,7 @@ public:
 	void update(float dtime, SDL_Event *event);
 	void draw();
 	const char* getTitle();
+	Vector2D GetRandomGridPos();
 
 private:
 	std::vector<Agent*> agents;

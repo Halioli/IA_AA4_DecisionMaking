@@ -33,6 +33,7 @@ private:
 	
 	FSM algorithmFSM;
 
+	bool playerAgentHasWeapon = true;
 	int _numberOfEnemies = 0;
 	std::vector<Agent*> zomboAgents;
 

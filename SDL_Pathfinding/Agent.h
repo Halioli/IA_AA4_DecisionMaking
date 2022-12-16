@@ -47,11 +47,13 @@ private:
 	int sprite_h;
 
 	bool hasWeapon = false;
+	float distanceThreshold = 50.f;
 
 public:
 	// FSM:
 	FSM* _agentFSM;
 
+	Agent* targetAgent;
 	AgentStates agentStates;
 
 	bool calculatedAlgorithm = false;
@@ -79,4 +81,9 @@ public:
 	void draw();
 	bool loadSpriteTexture(char* filename, int num_frames = 1);
 	void SetDecisionMakingAlgorithm(DecisionMakingAlgorithm newDecisionMakingAlgorithm);
+	Agent* GetTargetAgent();
+	void SetTargetAgent(Agent* targAgent);
+	bool GetHasWeapon();
+	void SetHasWeapon(bool val);
+	float GetDistanceTreshold();
 };

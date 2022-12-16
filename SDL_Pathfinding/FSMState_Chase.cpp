@@ -9,7 +9,7 @@ void FSMState_Chase::Enter(Agent* agent, float dTime)
 		
 }
 
-FSMState* FSMState_Chase::Update(Agent* agent, float dTime, Vector2D _randomPos)
+FSMState* FSMState_Chase::Update(Agent* agent, float dTime, Vector2D _randomPos, AgentStates& state)
 {
 	// TODO
 

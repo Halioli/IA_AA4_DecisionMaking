@@ -5,7 +5,7 @@ void FSMState_Evade::Enter(Agent* agent, float dTime)
 	// Define Enemy Target Pos
 }
 
-FSMState* FSMState_Evade::Update(Agent* agent, float dTime, Vector2D _randomPos)
+FSMState* FSMState_Evade::Update(Agent* agent, float dTime, Vector2D _randomPos, AgentStates& state)
 {
 	// TODO
 

@@ -10,24 +10,29 @@ void FSMState_Patrol::Enter(Agent* agent, float dTime)
 	 // 2. Reset pathfinding
 }
 
-FSMState* FSMState_Patrol::Update(Agent* agent, float dTime, Vector2D _randomPos)
+FSMState* FSMState_Patrol::Update(Agent* agent, float dTime, Vector2D _randomPos, AgentStates& state)
 {
 	// TODO
+	Vector2D temp = Vector2D(-1, -1);
 
 	if (agent->getPosition() == agent->getTarget())
 		agent->setTarget(_randomPos);
-	else
-	{
-		int i = 0;
-	}
 		
-	// if(target->inRange())
-		// if(target->hasGun())
-			//return FSMState_Evade;
-		//else 
-			//return FSMState_Chasé;
-	// else
+	if (temp.Distance(agent->targetAgent->getPosition(), agent->getPosition()) <= agent->GetDistanceTreshold())
+	{
+		if (agent->targetAgent->GetHasWeapon())
+		{
+			state = AgentStates::EVADE;
+			return new FSMState_Evade();
+		}
+		else
+		{
+			state = AgentStates::CHASE;
+			return new FSMState_Chase();
+		}
+	}
 
+	state = AgentStates::NONE;
 	return nullptr;
 }
 

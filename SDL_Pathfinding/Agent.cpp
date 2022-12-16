@@ -202,3 +202,28 @@ void Agent::SetDecisionMakingAlgorithm(DecisionMakingAlgorithm newDecisionMaking
 {
 	decisionMakingAlgorithm = newDecisionMakingAlgorithm;
 }
+
+Agent* Agent::GetTargetAgent()
+{
+	return targetAgent;
+}
+
+void Agent::SetTargetAgent(Agent* targAgent)
+{
+	targAgent = targAgent;
+}
+
+bool Agent::GetHasWeapon()
+{
+	return hasWeapon;
+}
+
+void Agent::SetHasWeapon(bool val)
+{
+	hasWeapon = val;
+}
+
+float Agent::GetDistanceTreshold()
+{
+	return distanceThreshold;
+}

@@ -19,6 +19,7 @@ SceneFSM::SceneFSM()
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
 	agent->SetDecisionMakingAlgorithm(algorithmFSM);
+	agent->SetHasWeapon(true);
 	agents.push_back(agent);
 
 	// set agent position coords to the center of a random cell
@@ -57,6 +58,11 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 		{
 			_numberOfEnemies = 2;
 			InitEnemies();
+		}
+		else if (event->key.keysym.scancode == SDL_SCANCODE_W)
+		{
+			playerAgentHasWeapon = !playerAgentHasWeapon;
+			agents[0]->SetHasWeapon(playerAgentHasWeapon);
 		}
 		break;
 	case SDL_MOUSEMOTION:
@@ -257,10 +263,9 @@ void SceneFSM::InitEnemies()
 		enemyAgent->loadSpriteTexture("../res/zombie1.png", 8);
 		enemyAgent->setBehavior(new PathFollowing);
 		enemyAgent->setTarget(Vector2D(-20, -20));
-
 		enemyAgent->_agentFSM = new FSM();
 		enemyAgent->_agentFSM->currentState = new FSMState_Patrol();
-
+		enemyAgent->targetAgent = agents[0];
 		zomboAgents.push_back(enemyAgent);
 	}
 

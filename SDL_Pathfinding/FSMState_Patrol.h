@@ -5,7 +5,7 @@
 class FSMState_Patrol : public FSMState
 {
 	void Enter(Agent* agent, float dTime) override;
-	FSMState* Update(Agent* agent, float dTime, Vector2D _randomPos) override;
+	FSMState* Update(Agent* agent, float dTime, Vector2D _randomPos, AgentStates& state) override;
 	void Exit(Agent* agent, float dTime) override;
 };
 

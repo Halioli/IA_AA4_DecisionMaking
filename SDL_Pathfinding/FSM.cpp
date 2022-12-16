@@ -2,17 +2,36 @@
 
 void FSM::Update(Agent* agent, float dTime, Vector2D _randomPos) 
 {
-	AgentStates newState; // Valorar què fem?
-	FSMState* newFSMState = currentState->Update(agent, dTime, _randomPos, &newState); // Valorar què fem?
+	AgentStates newState{};
+	FSMState* newFSMState = currentState->Update(agent, dTime, _randomPos, newState);
 	
-	if (newState != AgentStates::NONE) ChangeState(agent, dTime, newFSMState); // Valorar què fem?
+	if (newState != AgentStates::NONE) ChangeState(agent, dTime, newFSMState);
 	//						^
 }
 
 void FSM::ChangeState(Agent* agent, float dTime, FSMState* newState)
 {
 	currentState->Exit(agent, dTime);
-	currentState = newState;
+
+	switch (agent->agentStates)
+	{
+	case AgentStates::PATROL:
+		currentState = new FSMState_Patrol();
+		break;
+
+	case AgentStates::CHASE:
+		currentState = new FSMState_Chase();
+		break;
+
+	case AgentStates::EVADE:
+		currentState = new FSMState_Evade();
+		break;
+
+	default:
+		currentState = new FSMState_Patrol();
+		break;
+	}
+
 	currentState->Enter(agent, dTime);
 
 	// Segurament necessitarem un switch aquí:

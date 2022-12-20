@@ -5,6 +5,7 @@
 void FSMState_Patrol::Enter(Agent* agent, float dTime)
 {
 	//TODO 
+	std::cout << "Entering Patrol state..." << std::endl;
 
 	 // 1. Define first position to wander
 	 // 2. Reset pathfinding
@@ -12,7 +13,6 @@ void FSMState_Patrol::Enter(Agent* agent, float dTime)
 
 FSMState* FSMState_Patrol::Update(Agent* agent, float dTime, Vector2D _randomPos, AgentStates& state)
 {
-	// TODO
 	Vector2D temp = Vector2D(-1, -1);
 
 	if (agent->getPosition() == agent->getTarget())
@@ -22,17 +22,19 @@ FSMState* FSMState_Patrol::Update(Agent* agent, float dTime, Vector2D _randomPos
 	{
 		if (agent->targetAgent->GetHasWeapon())
 		{
-			state = AgentStates::EVADE;
+			agent->agentStates = AgentStates::EVADE;
+
 			return new FSMState_Evade();
 		}
 		else
 		{
-			state = AgentStates::CHASE;
+			agent->agentStates = AgentStates::CHASE;
+
 			return new FSMState_Chase();
 		}
 	}
 
-	state = AgentStates::NONE;
+	agent->agentStates = AgentStates::NONE;
 	return nullptr;
 }
 

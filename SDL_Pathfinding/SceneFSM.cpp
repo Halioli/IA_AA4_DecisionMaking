@@ -19,7 +19,7 @@ SceneFSM::SceneFSM()
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
 	agent->SetDecisionMakingAlgorithm(algorithmFSM);
-	agent->SetHasWeapon(true);
+	agent->SetHasWeapon(false); // Som mamahuevos.
 	agents.push_back(agent);
 
 	// set agent position coords to the center of a random cell
@@ -101,7 +101,9 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 
 		if ((zomboAgents[i]->getCurrentTargetIndex() == -1) && (maze->pix2cell(zomboAgents[i]->getPosition()) == maze->pix2cell(zomboAgents[i]->getTarget())))
 		{
-			zomboAgents[i]->setTarget(GetRandomGridPos());
+			//zomboAgents[i]->setTarget(GetRandomGridPos());
+			// Ask the agent for a valid position
+			// Depending on their state they'll give a valid position (random for patrol / player pos for chase / etc)
 
 			zomboAgents[i]->calculatedAlgorithm = false;
 		}

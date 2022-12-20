@@ -2,11 +2,13 @@
 
 void FSM::Update(Agent* agent, float dTime, Vector2D _randomPos) 
 {
-	AgentStates newState{};
-	FSMState* newFSMState = currentState->Update(agent, dTime, _randomPos, newState);
-	
-	if (newState != AgentStates::NONE) ChangeState(agent, dTime, newFSMState);
-	//						^
+	AgentStates newState{}; // No fa falta
+	FSMState* newFSMState = currentState->Update(agent, dTime, _randomPos, newState); // No fa falta newState (hehe)
+
+	if (agent->agentStates == AgentStates::CHASE) // Es pot borrar
+		AgentStates test = newState; // Es pot borrar
+
+	if (agent->agentStates != AgentStates::NONE) ChangeState(agent, dTime, newFSMState);
 }
 
 void FSM::ChangeState(Agent* agent, float dTime, FSMState* newState)
@@ -16,21 +18,23 @@ void FSM::ChangeState(Agent* agent, float dTime, FSMState* newState)
 	switch (agent->agentStates)
 	{
 	case AgentStates::PATROL:
-		currentState = new FSMState_Patrol();
+		newState = new FSMState_Patrol();
 		break;
 
 	case AgentStates::CHASE:
-		currentState = new FSMState_Chase();
+		newState = new FSMState_Chase();
 		break;
 
 	case AgentStates::EVADE:
-		currentState = new FSMState_Evade();
+		newState = new FSMState_Evade();
 		break;
 
 	default:
-		currentState = new FSMState_Patrol();
+		newState = new FSMState_Patrol();
 		break;
 	}
+
+	currentState = newState;
 
 	currentState->Enter(agent, dTime);
 

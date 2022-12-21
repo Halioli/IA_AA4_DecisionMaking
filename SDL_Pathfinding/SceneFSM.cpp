@@ -88,13 +88,17 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 		while ((!maze->isValidCell(coinPosition)) || (Vector2D::Distance(coinPosition, maze->pix2cell(agents[0]->getPosition()))<3))
 			coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	}
-	
 
 	// ENEMIES:
 	for (int i = 0; i < zomboAgents.size(); i++)
 	{
 		// FSM State Logic:
-		zomboAgents[i]->_agentFSM->Update(zomboAgents[i], dtime, GetRandomGridPos());
+		zomboAgents[i]->_agentFSM->Update(zomboAgents[i], dtime, maze); // S'haurà de valorar com passar les diferents posicions en funció
+																					  // de l'FSMState que calgui (Chase -> PlayerPos, Patrol -> Random, etc).
+																					      // Realment a dins de cada FSMState.cpp ja s'assigna la posició
+																						  // corresponent... o sigui, una mica 'equis de', la veritat.
+
+		std::cout << "Zombo " << i << ": " << "\n\ttargetPos.x : " << zomboAgents[i]->getTarget().x << "\n\ttargetPos.y : " << zomboAgents[i]->getTarget().y << std::endl;
 
 		// FSM Movement Logic:
 		zomboAgents[i]->update(dtime, event);
@@ -292,10 +296,12 @@ void SceneFSM::InitEnemies()
 
 Vector2D SceneFSM::GetRandomGridPos()
 {
-	Vector2D randomPos = Vector2D(-1.0f, -1.0f);
+	Vector2D randomPos = Vector2D(-1, -1);
 
 	while (!maze->isValidCell(randomPos) || (Vector2D::Distance(randomPos, maze->pix2cell(randomPos))) < 3)
 		randomPos = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
+
+	std::cout << randomPos.x << " " << randomPos.y << std::endl;
 
 	return randomPos;
 }

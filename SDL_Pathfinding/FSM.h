@@ -9,7 +9,7 @@ class FSM : public DecisionMakingAlgorithm
 public:
 	FSMState* currentState;
 
-	void Update(Agent* agent, float dTime, Vector2D _randomPos) override;
+	void Update(Agent* agent, float dTime, Grid* _maze) override;
 	void ChangeState(Agent* agent, float dTime, FSMState* newState);
 };
 

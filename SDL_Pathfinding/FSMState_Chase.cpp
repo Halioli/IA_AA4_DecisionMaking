@@ -5,13 +5,10 @@
 void FSMState_Chase::Enter(Agent* agent, float dTime)
 {
 	//TODO
-	std::cout << "Entering Chase state..." << std::endl;
-
-		//Guardar target(agent)
-		
+	std::cout << "Entering Chase state..." << std::endl;	
 }
 
-FSMState* FSMState_Chase::Update(Agent* agent, float dTime, Vector2D _randomPos, AgentStates& state)
+FSMState* FSMState_Chase::Update(Agent* agent, float dTime, Grid* _maze, AgentStates& state)
 {
 	// TODO
 	Vector2D temp = Vector2D(-1, -1);
@@ -41,5 +38,4 @@ void FSMState_Chase::Exit(Agent* agent, float dTime)
 {
 	//TODO
 	std::cout << "Exiting Chase state..." << std::endl;
-
 }

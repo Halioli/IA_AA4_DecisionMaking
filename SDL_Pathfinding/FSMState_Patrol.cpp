@@ -1,6 +1,8 @@
-#include "FSMState_Patrol.h"
 #include <iostream>
+
+#include "FSMState_Patrol.h"
 #include "Agent.h"
+#include "Grid.h"
 
 void FSMState_Patrol::Enter(Agent* agent, float dTime)
 {
@@ -11,14 +13,22 @@ void FSMState_Patrol::Enter(Agent* agent, float dTime)
 	 // 2. Reset pathfinding
 }
 
-FSMState* FSMState_Patrol::Update(Agent* agent, float dTime, Vector2D _randomPos, AgentStates& state)
+FSMState* FSMState_Patrol::Update(Agent* agent, float dTime, Grid* _maze, AgentStates& state)
 {
-	Vector2D temp = Vector2D(-1, -1);
+	Vector2D tempPos = Vector2D(-1, -1);
 
-	if (agent->getPosition() == agent->getTarget())
-		agent->setTarget(_randomPos);
+	if (_maze->pix2cell(agent->getPosition()) == _maze->pix2cell(agent->getTarget())) // 
+	{
+		while (!_maze->isValidCell(tempPos) || (Vector2D::Distance(tempPos, _maze->pix2cell(tempPos))) < 3)
+			tempPos = Vector2D((float)(rand() % _maze->getNumCellX()), (float)(rand() % _maze->getNumCellY()));
+
+		agent->setTarget(tempPos);
+	}
+
+	//if (agent->getPosition() == agent->getTarget())
+	//	agent->setTarget(_randomPos); // Generate new TargetPos
 		
-	if (temp.Distance(agent->targetAgent->getPosition(), agent->getPosition()) <= agent->GetDistanceTreshold())
+	if (tempPos.Distance(agent->targetAgent->getPosition(), agent->getPosition()) <= agent->GetDistanceTreshold())
 	{
 		if (agent->targetAgent->GetHasWeapon())
 		{

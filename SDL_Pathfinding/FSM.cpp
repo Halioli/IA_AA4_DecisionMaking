@@ -1,9 +1,9 @@
 #include "FSM.h"
 
-void FSM::Update(Agent* agent, float dTime, Vector2D _randomPos) 
+void FSM::Update(Agent* agent, float dTime, Grid* _maze)
 {
 	AgentStates newState{}; // No fa falta
-	FSMState* newFSMState = currentState->Update(agent, dTime, _randomPos, newState); // No fa falta newState (hehe)
+	FSMState* newFSMState = currentState->Update(agent, dTime, _maze, newState); // No fa falta newState (hehe)
 
 	if (agent->agentStates == AgentStates::CHASE) // Es pot borrar
 		AgentStates test = newState; // Es pot borrar

@@ -1,11 +1,12 @@
 #include "FSMState_Evade.h"
+#include "Grid.h"
 
 void FSMState_Evade::Enter(Agent* agent, float dTime)
 {
 	// Define Enemy Target Pos
 }
 
-FSMState* FSMState_Evade::Update(Agent* agent, float dTime, Vector2D _randomPos, AgentStates& state)
+FSMState* FSMState_Evade::Update(Agent* agent, float dTime, Grid* _maze, AgentStates& state)
 {
 	// TODO
 
@@ -26,6 +27,7 @@ FSMState* FSMState_Evade::Update(Agent* agent, float dTime, Vector2D _randomPos,
 	// ...
 	//if (timeToChange) return newState;
 	//else return nullptr;
+
 	return nullptr;
 }
 

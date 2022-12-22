@@ -2,8 +2,6 @@
 
 using namespace std;
 
-enum Color { White=0, Black, Red, Orange, Yellow, Green, Blue, Purple};
-char *color_strings[8] = {"White", "Black", "Red", "Orange", "Yellow", "Green", "Blue", "Purple"};
 
 SceneGOAP::SceneGOAP()
 {
@@ -22,17 +20,17 @@ SceneGOAP::SceneGOAP()
 
 	// set agent position coords to the center of a random cell in the Black room
 	Vector2D rand_cell(-1,-1);
-	while ((!maze->isValidCell(rand_cell)) || (maze->getCellValue(rand_cell) != Color::Black))
+	while ((!maze->isValidCell(rand_cell)) || (maze->getCellValue(rand_cell) != SceneElements::Black))
 		rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	agents[0]->setPosition(maze->cell2pix(rand_cell));
 
 	// set the coin in a random cell (but not in the Black room)
 	coinPosition = Vector2D(-1,-1);
-	while ((!maze->isValidCell(coinPosition)) || (maze->getCellValue(coinPosition) == Color::Black))
+	while ((!maze->isValidCell(coinPosition)) || (maze->getCellValue(coinPosition) == SceneElements::Black))
 		coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 
 	// set keys in in a random cell (but not in the room of its same color)
-	for (int i=Color::Red; i<8; i++)
+	for (int i=SceneElements::Red; i<8; i++)
 	{
 		keyPositions[i] = Vector2D(-1,-1);
 		while ((!maze->isValidCell(keyPositions[i])) || (maze->getCellValue(keyPositions[i]) == i))
@@ -88,7 +86,7 @@ void SceneGOAP::update(float dtime, SDL_Event *event)
 			// nothing to do here but clear the coin position (set coinPosition to -1,-1)
 			coinPosition = Vector2D(-1,-1);
 		}
-		for (int i=Color::Red; i<8; i++)
+		for (int i=SceneElements::Red; i<8; i++)
 		{
 			if (maze->pix2cell(agents[0]->getPosition()) == keyPositions[i])
 			{
@@ -193,7 +191,7 @@ void SceneGOAP::drawCoin()
 		SDL_RenderCopy(TheApp::Instance()->getRenderer(), coin_texture, NULL, &dstrect);
 	}
 
-	for (int i=Color::Red; i<8; i++)
+	for (int i=SceneElements::Red; i<8; i++)
 	{
 		if (!maze->isValidCell(keyPositions[i])) continue;
 		Vector2D key_coords = maze->cell2pix(keyPositions[i]);

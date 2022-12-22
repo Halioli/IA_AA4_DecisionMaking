@@ -163,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Agent.h" />
+    <ClInclude Include="AgentStates.h" />
     <ClInclude Include="AStar.h" />
     <ClInclude Include="CompositeWeightedSum.h" />
     <ClInclude Include="BFS.h" />

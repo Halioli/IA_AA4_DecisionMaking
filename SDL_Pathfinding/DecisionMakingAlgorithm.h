@@ -1,9 +1,10 @@
 #pragma once
-#include "Agent.h"
+class Agent;
+class Grid;
 
 class DecisionMakingAlgorithm
 {
-
-	virtual void Update(Agent* agent, float dTime);
+public:
+	virtual void Update(Agent* agent, float dTime, Grid* _maze);
 };
 

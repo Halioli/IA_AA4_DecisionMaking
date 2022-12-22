@@ -17,16 +17,15 @@ FSMState* FSMState_Patrol::Update(Agent* agent, float dTime, Grid* _maze, AgentS
 {
 	Vector2D tempPos = Vector2D(-1, -1);
 
-	if (_maze->pix2cell(agent->getPosition()) == _maze->pix2cell(agent->getTarget())) // 
+	if (agent->getCurrentTargetIndex() == -1)
 	{
 		while (!_maze->isValidCell(tempPos) || (Vector2D::Distance(tempPos, _maze->pix2cell(tempPos))) < 3)
 			tempPos = Vector2D((float)(rand() % _maze->getNumCellX()), (float)(rand() % _maze->getNumCellY()));
 
 		agent->setTarget(tempPos);
-	}
 
-	//if (agent->getPosition() == agent->getTarget())
-	//	agent->setTarget(_randomPos); // Generate new TargetPos
+		//std::cout << tempPos.x << " / " << tempPos.y << std::endl;
+	}
 		
 	if (tempPos.Distance(agent->targetAgent->getPosition(), agent->getPosition()) <= agent->GetDistanceTreshold())
 	{

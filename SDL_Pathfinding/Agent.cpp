@@ -42,6 +42,11 @@ Vector2D Agent::getTarget()
 	return target;
 }
 
+void Agent::setTarget(Vector2D _target)
+{
+	target = _target;
+}
+
 Vector2D Agent::getVelocity()
 {
 	return velocity;
@@ -65,11 +70,6 @@ float Agent::getMass()
 void Agent::setPosition(Vector2D _position)
 {
 	position = _position;
-}
-
-void Agent::setTarget(Vector2D _target)
-{
-	target = _target;
 }
 
 void Agent::setVelocity(Vector2D _velocity)

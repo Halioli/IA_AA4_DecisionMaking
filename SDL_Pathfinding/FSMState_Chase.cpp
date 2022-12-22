@@ -1,6 +1,7 @@
 #include "FSMState_Chase.h"
 #include <iostream>
 #include "Agent.h"
+#include "Grid.h"
 
 void FSMState_Chase::Enter(Agent* agent, float dTime)
 {
@@ -14,7 +15,7 @@ FSMState* FSMState_Chase::Update(Agent* agent, float dTime, Grid* _maze, AgentSt
 	Vector2D temp = Vector2D(-1, -1);
 
 	if (agent->getPosition() == agent->getTarget())
-		agent->setTarget(agent->targetAgent->getPosition());
+		agent->setTarget(_maze->pix2cell(agent->targetAgent->getPosition()));
 
 	if (temp.Distance(agent->targetAgent->getPosition(), agent->getPosition()) <= agent->GetDistanceTreshold())
 	{

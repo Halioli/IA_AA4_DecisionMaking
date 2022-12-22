@@ -19,7 +19,7 @@ SceneFSM::SceneFSM()
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
 	agent->SetDecisionMakingAlgorithm(algorithmFSM);
-	agent->SetHasWeapon(false); // Som mamahuevos.
+	agent->SetHasWeapon(false);
 	agents.push_back(agent);
 
 	// set agent position coords to the center of a random cell
@@ -98,7 +98,7 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 																					      // Realment a dins de cada FSMState.cpp ja s'assigna la posició
 																						  // corresponent... o sigui, una mica 'equis de', la veritat.
 
-		std::cout << "Zombo " << i << ": " << "\n\ttargetPos.x : " << zomboAgents[i]->getTarget().x << "\n\ttargetPos.y : " << zomboAgents[i]->getTarget().y << std::endl;
+		//std::cout << "Zombo " << i << ": " << "\n\ttargetPos.x : " << zomboAgents[i]->getTarget().x << "\n\ttargetPos.y : " << zomboAgents[i]->getTarget().y << std::endl;
 
 		// FSM Movement Logic:
 		zomboAgents[i]->update(dtime, event);
@@ -109,7 +109,7 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 			// Ask the agent for a valid position
 			// Depending on their state they'll give a valid position (random for patrol / player pos for chase / etc)
 
-			zomboAgents[i]->calculatedAlgorithm = false;
+			zomboAgents[i]->calculatedAlgorithm = false; // F
 		}
 
 		if (!zomboAgents[i]->calculatedAlgorithm)
@@ -190,7 +190,6 @@ void SceneFSM::drawCoin()
 	SDL_RenderCopy(TheApp::Instance()->getRenderer(), coin_texture, NULL, &dstrect);
 }
 
-
 bool SceneFSM::loadTextures(char* filename_bg, char* filename_coin)
 {
 	SDL_Surface *image = IMG_Load(filename_bg);
@@ -223,14 +222,17 @@ void SceneFSM::DoGreedyBFS(Agent* _agent)
 	// call greedyBFS
 	greedyBFS->startingNode = graph->GetNodeByPosition(maze->pix2cell(_agent->getPosition()));
 	greedyBFS->SetGoalPosition(_agent->getTarget());
+	//std::cout << _agent->getTarget().x << " / " << _agent->getTarget().y << std::endl;
 
 	greedyBFS->GreedyBFSAlgorithm(graph);
 
-	//agents[0]->addPathPoint //<-- add each path node here transformed into cell2pix(cell)
 	for (auto point : greedyBFS->pathToGoal)
 	{
 		_agent->addPathPoint(maze->cell2pix(point->GetPos()));
+
+		//std::cout << point->GetPos().x << " / " << point->GetPos().y << " | ";
 	}
+	//std::cout << std::endl;
 }
 
 void SceneFSM::InitEnemies() 
@@ -254,9 +256,8 @@ void SceneFSM::InitEnemies()
 			rand_cell = Vector2D(-1, -1);
 
 			// randomize enemy target
-			zomboAgents[i]->setTarget(Vector2D(-1, -1));
-			while ((!maze->isValidCell(zomboAgents[i]->getTarget())) || (Vector2D::Distance(zomboAgents[i]->getTarget(), maze->pix2cell(zomboAgents[i]->getPosition())) < 3))
-				zomboAgents[i]->setTarget(Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY())));
+			//zomboAgents[i]->setTarget(zomboAgents[i]->getPosition());
+			//zomboAgents[i]->setTarget(GetRandomGridPos());
 		}
 
 		return;
@@ -268,7 +269,7 @@ void SceneFSM::InitEnemies()
 		Agent* enemyAgent = new Agent;
 		enemyAgent->loadSpriteTexture("../res/zombie1.png", 8);
 		enemyAgent->setBehavior(new PathFollowing);
-		enemyAgent->setTarget(Vector2D(-20, -20));
+		enemyAgent->setTarget(Vector2D(-1, -1));
 		enemyAgent->_agentFSM = new FSM();
 		enemyAgent->_agentFSM->currentState = new FSMState_Patrol();
 		enemyAgent->targetAgent = agents[0];
@@ -290,7 +291,7 @@ void SceneFSM::InitEnemies()
 		rand_cell = Vector2D(-1, -1);
 
 		// randomize enemy target
-		zomboAgents[i]->setTarget(GetRandomGridPos());
+		//zomboAgents[i]->setTarget(zomboAgents[i]->getPosition());
 	}
 }
 

@@ -63,13 +63,13 @@ public:
 	~Agent();
 	Vector2D getPosition();
 	Vector2D getTarget();
+	void setTarget(Vector2D target);
 	Vector2D getVelocity();
 	float getMaxVelocity();
 	float getMaxForce();
 	float getMass();
 	void setBehavior(SteeringBehavior *behavior);
 	void setPosition(Vector2D position);
-	void setTarget(Vector2D target);
 	void setVelocity(Vector2D velocity);
 	void addPathPoint(Vector2D point);
 	void setCurrentTargetIndex(int idx);

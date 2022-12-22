@@ -27,7 +27,7 @@ FSMState* FSMState_Patrol::Update(Agent* agent, float dTime, Grid* _maze, AgentS
 		//std::cout << tempPos.x << " / " << tempPos.y << std::endl;
 	}
 		
-	if (tempPos.Distance(agent->targetAgent->getPosition(), agent->getPosition()) <= agent->GetDistanceTreshold())
+	if (Vector2D::Distance(agent->targetAgent->getPosition(), agent->getPosition()) <= agent->GetDistanceTreshold())
 	{
 		if (agent->targetAgent->GetHasWeapon())
 		{

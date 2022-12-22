@@ -17,7 +17,7 @@ FSMState* FSMState_Chase::Update(Agent* agent, float dTime, Grid* _maze, AgentSt
 	if (agent->getPosition() == agent->getTarget())
 		agent->setTarget(_maze->pix2cell(agent->targetAgent->getPosition()));
 
-	if (temp.Distance(agent->targetAgent->getPosition(), agent->getPosition()) <= agent->GetDistanceTreshold())
+	if (Vector2D::Distance(agent->targetAgent->getPosition(), agent->getPosition()) <= agent->GetDistanceTreshold())
 	{
 		if (agent->targetAgent->GetHasWeapon())
 		{

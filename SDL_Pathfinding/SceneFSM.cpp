@@ -19,7 +19,7 @@ SceneFSM::SceneFSM()
 	agent->setBehavior(new PathFollowing);
 	agent->setTarget(Vector2D(-20,-20));
 	agent->SetDecisionMakingAlgorithm(algorithmFSM);
-	agent->SetHasWeapon(false);
+	agent->SetHasWeapon(true);
 	agents.push_back(agent);
 
 	// set agent position coords to the center of a random cell
@@ -63,6 +63,7 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 		{
 			playerAgentHasWeapon = !playerAgentHasWeapon;
 			agents[0]->SetHasWeapon(playerAgentHasWeapon);
+			std::cout << "Agent has weapon? " << playerAgentHasWeapon << std::endl;
 		}
 		break;
 	case SDL_MOUSEMOTION:

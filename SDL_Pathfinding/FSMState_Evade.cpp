@@ -4,6 +4,7 @@
 void FSMState_Evade::Enter(Agent* agent, float dTime)
 {
 	// Define Enemy Target Pos
+	std::cout << "Entering Evade state..." << std::endl;
 }
 
 FSMState* FSMState_Evade::Update(Agent* agent, float dTime, Grid* _maze, AgentStates& state)
@@ -13,7 +14,7 @@ FSMState* FSMState_Evade::Update(Agent* agent, float dTime, Grid* _maze, AgentSt
 
 	agent->setTarget(CalculateFarthestCell(agent, _maze));
 
-	if (tempPos.Distance(agent->targetAgent->getPosition(), agent->getPosition()) <= agent->GetDistanceTreshold())
+	if (Vector2D::Distance(agent->targetAgent->getPosition(), agent->getPosition()) <= agent->GetDistanceTreshold())
 	{
 		if (agent->targetAgent->GetHasWeapon())
 		{
@@ -33,38 +34,30 @@ FSMState* FSMState_Evade::Update(Agent* agent, float dTime, Grid* _maze, AgentSt
 
 void FSMState_Evade::Exit(Agent* agent, float dTime)
 {
+	std::cout << "Exit Evade state..." << std::endl;
 }
 
 Vector2D FSMState_Evade::CalculateFarthestCell(Agent* agent, Grid* _maze)
 {
-	Vector2D result;
-
-	// tempPos ha de valer la posició del neighbour més llunyà al Monke
 	Vector2D agentPos = agent->getPosition();
+	std::vector<Vector2D> positions;
 
-	Vector2D upPos = Vector2D(agentPos.x - 1, agentPos.y);
-	Vector2D downPos = Vector2D(agentPos.x + 1, agentPos.y);
-	Vector2D leftPos = Vector2D(agentPos.x, agentPos.y - 1);
-	Vector2D rightPos = Vector2D(agentPos.x, agentPos.y + 1);
-
-	float upDistance = upPos.Distance(agent->getPosition(), upPos);
-	std::cout << "> Up Distance: " << upDistance << std::endl;
-
-	float downDistance = downPos.Distance(agent->getPosition(), downPos);
-	std::cout << "> Down Distance: " << downDistance << std::endl;
-
-	float leftDistance = leftPos.Distance(agent->getPosition(), leftPos);
-	std::cout << "> Left Distance: " << leftDistance << std::endl;
-
-	float rightDistance = rightPos.Distance(agent->getPosition(), rightPos);
-	std::cout << "> Right Distance: " << rightDistance << std::endl;
+	positions.push_back(Vector2D(agentPos.x - 1, agentPos.y));
+	positions.push_back(Vector2D(agentPos.x + 1, agentPos.y));
+	positions.push_back(Vector2D(agentPos.x, agentPos.y - 1));
+	positions.push_back(Vector2D(agentPos.x, agentPos.y + 1));
 
 	float farthestDistance = 0.0f;
+	int farthestIndex = 0;
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < positions.size(); i++)
 	{
-		// Falta agrupar les distàncies en un array (i poder iterar-lo dins el for).
+		if (Vector2D::Distance(agentPos, positions[i]) > farthestDistance)
+		{
+			farthestDistance = Vector2D::Distance(agentPos, positions[i]);
+			farthestIndex = i;
+		}
 	}
 
-	return result;
+	return positions[farthestIndex];
 }

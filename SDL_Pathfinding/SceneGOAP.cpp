@@ -1,5 +1,7 @@
+#pragma once
 #include "SceneGOAP.h"
-#include "SceneElements.h"
+#include "KeyElement.h"
+//#include "GOAPWorldState.h"
 
 using namespace std;
 
@@ -37,13 +39,20 @@ SceneGOAP::SceneGOAP()
 			keyPositions[i] = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	}
 
-	// Initialize World State:
+	// Initialize World State
+	worldState = GOAPWorldState();
+	for (int i = 0; i < SceneElements::Count - 1; i++)
+	{
+		worldState.value[(SceneElements)i] = false;
+	}
+
+	// Initialize Key States:
+	keyElements = std::vector<KeyElement*>();
 	for (int i = SceneElements::RedKey; i < SceneElements::Count - 1; i++)
 	{
-		// Testing
-		//worldState.emplace(std::pair<SceneElements,bool>(SceneElements::WhiteKey, false));
+		keyElements.push_back(new KeyElement(keyPositions[i], maze->pix2cell(keyPositions[i]), (SceneElements)i));
 
-
+		keyElements[i]->CalculatePrecondition((Color)maze->getCellValue(keyPositions[i]));
 	}
 }
 
@@ -198,7 +207,7 @@ void SceneGOAP::drawCoin()
 		SDL_RenderCopy(TheApp::Instance()->getRenderer(), coin_texture, NULL, &dstrect);
 	}
 
-	for (int i = SceneElements::RedKey; i < SceneElements::Count - 1; i++)
+	for (int i = Color::Red; i < 8; i++)
 	{
 		if (!maze->isValidCell(keyPositions[i])) continue;
 		Vector2D key_coords = maze->cell2pix(keyPositions[i]);

@@ -1,11 +1,11 @@
 #include "GOAPWorldState.h"
 
-void GOAPWorldState::Set(std::vector<bool> val)
+void GOAPWorldState::Set(std::map<SceneElements, bool> val)
 {
-	// TODO
+	value = val;
 }
 
 void GOAPWorldState::Clear()
 {
-	// TODO
+	value.clear();
 }

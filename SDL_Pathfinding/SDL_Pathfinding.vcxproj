@@ -149,8 +149,10 @@
     <ClCompile Include="GOAPAction_Aim.cpp" />
     <ClCompile Include="GOAPAction_Patrol.cpp" />
     <ClCompile Include="GOAPAction_Shoot.cpp" />
+    <ClCompile Include="GOAPAStart.cpp" />
     <ClCompile Include="GOAPWorldState.cpp" />
     <ClCompile Include="GreedyBFS.cpp" />
+    <ClCompile Include="KeyElement.cpp" />
     <ClCompile Include="PathFindingAlgorithm.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="main.cpp" />
@@ -188,8 +190,10 @@
     <ClInclude Include="GOAPAction_Aim.h" />
     <ClInclude Include="GOAPAction_Patrol.h" />
     <ClInclude Include="GOAPAction_Shoot.h" />
+    <ClInclude Include="GOAPAStart.h" />
     <ClInclude Include="GOAPWorldState.h" />
     <ClInclude Include="GreedyBFS.h" />
+    <ClInclude Include="KeyElement.h" />
     <ClInclude Include="PathFindingAlgorithm.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Node.h" />

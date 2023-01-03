@@ -11,8 +11,10 @@
 #include "PathFollowing.h"
 #include "Grid.h"
 #include "SceneElements.h"
+#include "GOAPWorldState.h"
 
-class SceneElement;
+//class GOAPWorldState;
+class KeyElement;
 
 class SceneGOAP :
 	public Scene
@@ -33,9 +35,8 @@ private:
 	Grid *maze;
 	bool draw_grid;
 
-	SceneElement* sceneElement;
-
-	SceneElements tuputamadre = SceneElements::WhiteKey;
+	GOAPWorldState worldState;
+	std::vector<KeyElement*> keyElements;
 
 	// This map st wores the information of the current world state (keys / coin collected)
 	//std::map<SceneElements, bool> worldState;

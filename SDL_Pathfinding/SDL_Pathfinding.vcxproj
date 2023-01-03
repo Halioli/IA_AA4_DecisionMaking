@@ -158,6 +158,7 @@
     <ClCompile Include="PathFindingGraph.cpp" />
     <ClCompile Include="PathFollowing.cpp" />
     <ClCompile Include="SalesmanProblem.cpp" />
+    <ClCompile Include="SceneElements.cpp" />
     <ClCompile Include="SceneFSM.cpp" />
     <ClCompile Include="SceneGOAP.cpp" />
     <ClCompile Include="ScenePathFindingAA3.cpp" />

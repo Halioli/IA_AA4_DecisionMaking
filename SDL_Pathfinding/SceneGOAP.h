@@ -12,6 +12,8 @@
 #include "Grid.h"
 #include "SceneElements.h"
 
+class SceneElement;
+
 class SceneGOAP :
 	public Scene
 {
@@ -31,8 +33,12 @@ private:
 	Grid *maze;
 	bool draw_grid;
 
-	// This map stores the information of the current world state (keys / coin collected)
-	std::map<SceneElements, bool> worldState;
+	SceneElement* sceneElement;
+
+	SceneElements tuputamadre = SceneElements::WhiteKey;
+
+	// This map st wores the information of the current world state (keys / coin collected)
+	//std::map<SceneElements, bool> worldState;
 	// TODO:
 	// - Implement neighbour system correctly (compare precondition with worldState & update it)
 		// - Neighbours will have a map of type <SceneElements, bool> (we will need to include the header file).
@@ -46,5 +52,4 @@ private:
 	SDL_Texture *coin_texture;
 	SDL_Texture *keys_texture;
 	bool loadTextures(char* filename_bg, char* filename_coin, char* filename_keys);
-
 };

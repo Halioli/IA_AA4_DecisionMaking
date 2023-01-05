@@ -5,27 +5,27 @@ void KeyElement::CalculatePrecondition(Color colorRoom)
 	switch (colorRoom)
 	{
 	case Red:
-		precondition[SceneElements::RedKey] = true;
+		worldState.SetValueElement(SceneElements::RedKey, true);
 		break;
 
 	case Orange:
-		precondition[SceneElements::OrangeKey] = true;
+		worldState.SetValueElement(SceneElements::OrangeKey, true);
 		break;
 
 	case Yellow:
-		precondition[SceneElements::YellowKey] = true;
+		worldState.SetValueElement(SceneElements::YellowKey, true);
 		break;
 
 	case Green:
-		precondition[SceneElements::GreenKey] = true;
+		worldState.SetValueElement(SceneElements::GreenKey, true);
 		break;
 
 	case Blue:
-		precondition[SceneElements::BlueKey] = true;
+		worldState.SetValueElement(SceneElements::BlueKey, true);
 		break;
 
 	case Purple:
-		precondition[SceneElements::PurpleKey] = true;
+		worldState.SetValueElement(SceneElements::PurpleKey, true);
 		break;
 
 	case White:
@@ -40,38 +40,38 @@ void KeyElement::SetResultValues()
 	switch (keyColor)
 	{
 	case RedKey:
-		result[SceneElements::RedKey] = true;
-		precondition[SceneElements::RedKey] = false;
+		//worldState.SetMaskElement(SceneElements::RedKey, true);
+		worldState.SetValueElement(SceneElements::RedKey, false);
 		break;
 
 	case OrangeKey:
-		result[SceneElements::OrangeKey] = true;
-		precondition[SceneElements::OrangeKey] = false;
+		//worldState.SetMaskElement(SceneElements::OrangeKey, true);
+		worldState.SetValueElement(SceneElements::OrangeKey, false);
 		break;
 
 	case YellowKey:
-		result[SceneElements::YellowKey] = true;
-		precondition[SceneElements::YellowKey] = false;
+		//worldState.SetMaskElement(SceneElements::YellowKey, true);
+		worldState.SetValueElement(SceneElements::YellowKey, false);
 		break;
 
 	case GreenKey:
-		result[SceneElements::GreenKey] = true;
-		precondition[SceneElements::GreenKey] = false;
+		//worldState.SetMaskElement(SceneElements::GreenKey, true);
+		worldState.SetValueElement(SceneElements::GreenKey, false);
 		break;
 
 	case BlueKey:
-		result[SceneElements::BlueKey] = true;
-		precondition[SceneElements::BlueKey] = false;
+		//worldState.SetMaskElement(SceneElements::BlueKey, true);
+		worldState.SetValueElement(SceneElements::BlueKey, false);
 		break;
 
 	case PurpleKey:
-		result[SceneElements::PurpleKey] = true;
-		precondition[SceneElements::PurpleKey] = false;
+		//worldState.SetMaskElement(SceneElements::PurpleKey, true);
+		worldState.SetValueElement(SceneElements::PurpleKey, false);
 		break;
 
 	case Coin:
-		result[SceneElements::Coin] = true;
-		precondition[SceneElements::Coin] = false;
+		//worldState.SetMaskElement(SceneElements::Coin, true);
+		worldState.SetValueElement(SceneElements::Coin, false);
 		break;
 
 	case Count:

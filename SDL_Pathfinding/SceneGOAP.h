@@ -12,9 +12,10 @@
 #include "Grid.h"
 #include "SceneElements.h"
 #include "GOAPWorldState.h"
+#include "GOAPAction.h"
 
-//class GOAPWorldState;
 class KeyElement;
+class GOAPAStar;
 
 class SceneGOAP :
 	public Scene
@@ -35,13 +36,16 @@ private:
 	Grid *maze;
 	bool draw_grid;
 
-	GOAPWorldState worldState;
+	GOAPWorldState* currentWorldState;
 	std::vector<KeyElement*> keyElements;
+	std::vector<GOAPAction*> goapActions;
+
+	GOAPAStar* goapAStar;
 
 	// This map st wores the information of the current world state (keys / coin collected)
-	//std::map<SceneElements, bool> worldState;
+	//std::map<SceneElements, bool> currentWorldState;
 	// TODO:
-	// - Implement neighbour system correctly (compare precondition with worldState & update it)
+	// - Implement neighbour system correctly (compare precondition with currentWorldState & update it)
 		// - Neighbours will have a map of type <SceneElements, bool> (we will need to include the header file).
 			// - This variable will store the preconditions of the said key (ex: map<Blue, true> means -> Needs Blue key).
 		// - Neighbours will have another map of type <SceneElements, bool>.

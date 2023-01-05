@@ -3,7 +3,9 @@
 enum Color { White = 0, Black, Red, Orange, Yellow, Green, Blue, Purple };
 
 enum SceneElements {
-	RedKey = 0,
+	WhiteKey = 0, 
+	BlackKey,
+	RedKey,
 	OrangeKey,
 	YellowKey,
 	GreenKey,

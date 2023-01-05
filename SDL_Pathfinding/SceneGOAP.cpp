@@ -1,7 +1,7 @@
 #pragma once
 #include "SceneGOAP.h"
 #include "KeyElement.h"
-//#include "GOAPWorldState.h"
+#include "GOAPAStart.h"
 
 using namespace std;
 
@@ -40,10 +40,10 @@ SceneGOAP::SceneGOAP()
 	}
 
 	// Initialize World State
-	worldState = GOAPWorldState();
+	currentWorldState = new GOAPWorldState();
 	for (int i = 0; i < SceneElements::Count - 1; i++)
 	{
-		worldState.value[(SceneElements)i] = false;
+		currentWorldState->SetValueElement(i, false);
 	}
 
 	// Initialize Key States:
@@ -51,9 +51,34 @@ SceneGOAP::SceneGOAP()
 	for (int i = SceneElements::RedKey; i < SceneElements::Count - 1; i++)
 	{
 		keyElements.push_back(new KeyElement(keyPositions[i], maze->pix2cell(keyPositions[i]), (SceneElements)i));
-
-		keyElements[i]->CalculatePrecondition((Color)maze->getCellValue(keyPositions[i]));
 	}
+
+	// Initialize GOAP Actions:
+	goapActions = std::vector<GOAPAction*>();
+	for (int i = SceneElements::RedKey; i < SceneElements::Coin - 1; i++)
+	{
+		Color color = (Color)maze->getCellValue(keyPositions[i]);
+
+		goapActions.push_back(new GOAPAction());
+
+		if (color != Color::Black)
+			goapActions[i]->SetPreconditionValue(color, true);
+
+		goapActions[i]->SetEffectValue(keyElements[i]->keyColor, true);
+	}
+
+	// Initialize Coin Action:
+	GOAPAction* coinAction = new GOAPAction();
+	if ((Color)maze->getCellValue(coinPosition) != Color::Black)
+		coinAction->SetPreconditionValue((Color)maze->getCellValue(coinPosition), true);
+	goapActions.push_back(coinAction);
+
+	// Initialize GOAP A*:
+	goapAStar = new GOAPAStar(goapActions);
+	goapAStar->startingWorldState = currentWorldState;
+	GOAPWorldState* goalWS = new GOAPWorldState();
+	goalWS->SetValueElement(SceneElements::Coin, true);
+	goapAStar->goalWorldState = goalWS;
 }
 
 SceneGOAP::~SceneGOAP()

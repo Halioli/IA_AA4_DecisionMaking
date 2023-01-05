@@ -2,15 +2,13 @@
 #include <map>
 #include "Vector2D.h"
 #include "SceneGOAP.h"
+#include "GOAPWorldState.h"
 
 class KeyElement
 {
 public:
 	KeyElement(Vector2D _posotion, Vector2D _cellPosotion, SceneElements _keyColor) : position(_posotion), cellPosition(_cellPosotion), keyColor(_keyColor)
 	{
-		precondition = std::map<SceneElements, bool>();
-		result = std::map<SceneElements, bool>();
-
 		SetResultValues();
 	}
 
@@ -19,8 +17,7 @@ public:
 
 	SceneElements keyColor;
 
-	std::map<SceneElements, bool> precondition;
-	std::map<SceneElements, bool> result;
+	GOAPWorldState worldState;
 
 	void CalculatePrecondition(Color colorRoom);
 

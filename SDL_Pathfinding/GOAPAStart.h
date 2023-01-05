@@ -3,31 +3,39 @@
 #include <queue>
 #include "PathFindingAlgorithm.h"
 #include "Node.h"
-#include "KeyElement.h"
 #include "GOAPWorldState.h"
+#include "GOAPAction.h"
 
 class GOAPAStar
 {
 public:
-	GOAPAStar();
+	GOAPAStar(std::vector<GOAPAction*> actions);
 	~GOAPAStar();
 
-	std::map<KeyElement*, KeyElement*> cameFrom;
-	std::vector<KeyElement*> pathToGoal;
-	std::map<KeyElement*, float> costSoFar;
+	std::map<GOAPWorldState*, std::pair<GOAPWorldState*, GOAPAction*>> cameFrom;
+	std::vector<GOAPAction*> planToGoal;
+	std::map<GOAPWorldState*, float> costSoFar;
 
 	float priority;
-	GOAPWorldState worldStateGOAP;
+	// Actions
+	std::vector<GOAPAction*> goapActions; // All possible actions, used to get neighbours
+	std::vector<GOAPAction*> neighbourActions;
+	GOAPAction* currentAction;
+	GOAPAction* targetAction;
+	//GOAPAction* goalAction;
+	//GOAPAction* startingAction;
 
-	std::vector<KeyElement*> neighbours;
-	KeyElement* current;
-	KeyElement* target;
-	KeyElement* goal;
-	KeyElement* startingNode;
+	// World States
+	//std::vector<GOAPWorldState*> neighbourWorldStates;
+	//GOAPWorldState* currentWorldState;
+	//GOAPWorldState* targetWorldState;
+	GOAPWorldState* goalWorldState;
+	GOAPWorldState* startingWorldState;
+
 
 	void FindPath(Agent* agent, float dt);
-	float Heuristic(KeyElement* goal, KeyElement* curr);
-	void Heuristic() {};
+	float Heuristic(GOAPAction* goal, GOAPAction* curr);
 	void SetGoalPosition(Vector2D coinPos);
 	void AStarAlgorithm(PathFindingGraph* graph);
+	std::vector<std::pair<GOAPWorldState*, GOAPAction*>> GetWorldStateNeighbours(GOAPWorldState* _worldState);
 };

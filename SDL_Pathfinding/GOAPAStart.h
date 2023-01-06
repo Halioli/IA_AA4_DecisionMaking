@@ -9,7 +9,7 @@
 class GOAPAStar
 {
 public:
-	GOAPAStar(std::vector<GOAPAction*> actions);
+	GOAPAStar(std::vector<GOAPAction*> actions, GOAPWorldState*);
 	~GOAPAStar();
 
 	std::map<GOAPWorldState*, std::pair<GOAPWorldState*, GOAPAction*>> cameFrom;
@@ -23,7 +23,7 @@ public:
 	GOAPAction* currentAction;
 	GOAPAction* targetAction;
 	//GOAPAction* goalAction;
-	//GOAPAction* startingAction;
+	GOAPAction* startingAction;
 
 	// World States
 	//std::vector<GOAPWorldState*> neighbourWorldStates;
@@ -36,6 +36,6 @@ public:
 	void FindPath(Agent* agent, float dt);
 	float Heuristic(GOAPAction* goal, GOAPAction* curr);
 	void SetGoalPosition(Vector2D coinPos);
-	void AStarAlgorithm(PathFindingGraph* graph);
+	void AStarAlgorithm();
 	std::vector<std::pair<GOAPWorldState*, GOAPAction*>> GetWorldStateNeighbours(GOAPWorldState* _worldState);
 };

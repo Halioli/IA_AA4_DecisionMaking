@@ -13,7 +13,7 @@ class GOAPAction
 	float cost = 1.f;
 
 public:
-	std::vector<GOAPAction*> neighbourActions;
+	// std::vector<GOAPAction*> neighbourActions;
 
 	void SetPreconditions(GOAPWorldState _preconditions);
 	void SetPreconditionValue(int index, bool value);

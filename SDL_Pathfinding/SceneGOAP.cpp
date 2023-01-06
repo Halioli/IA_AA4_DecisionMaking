@@ -62,9 +62,9 @@ SceneGOAP::SceneGOAP()
 		goapActions.push_back(new GOAPAction());
 
 		if (color != Color::Black)
-			goapActions[i]->SetPreconditionValue(color, true);
+			goapActions[i - 2]->SetPreconditionValue(color, true);
 
-		goapActions[i]->SetEffectValue(keyElements[i]->keyColor, true);
+		goapActions[i - 2]->SetEffectValue(keyElements[i - 2]->keyColor, true);
 	}
 
 	// Initialize Coin Action:
@@ -74,8 +74,7 @@ SceneGOAP::SceneGOAP()
 	goapActions.push_back(coinAction);
 
 	// Initialize GOAP A*:
-	goapAStar = new GOAPAStar(goapActions);
-	goapAStar->startingWorldState = currentWorldState;
+	goapAStar = new GOAPAStar(goapActions, currentWorldState);
 	GOAPWorldState* goalWS = new GOAPWorldState();
 	goalWS->SetValueElement(SceneElements::Coin, true);
 	goapAStar->goalWorldState = goalWS;
@@ -101,6 +100,11 @@ void SceneGOAP::update(float dtime, SDL_Event *event)
 	case SDL_KEYDOWN:
 		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
 			draw_grid = !draw_grid;
+		else if (event->key.keysym.scancode == SDL_SCANCODE_G)
+		{
+			// Call do GOAP A*
+			goapAStar->AStarAlgorithm();
+		}
 		break;
 	case SDL_MOUSEMOTION:
 	case SDL_MOUSEBUTTONDOWN:

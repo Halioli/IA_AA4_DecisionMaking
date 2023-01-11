@@ -106,7 +106,7 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 
 		if ((zomboAgents[i]->getCurrentTargetIndex() == -1) && (maze->pix2cell(zomboAgents[i]->getPosition()) == maze->pix2cell(zomboAgents[i]->getTarget())))
 		{
-			//zomboAgents[i]->setTarget(GetRandomGridPos());
+			zomboAgents[i]->setTarget(GetRandomGridPos());
 			// Ask the agent for a valid position
 			// Depending on their state they'll give a valid position (random for patrol / player pos for chase / etc)
 

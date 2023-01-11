@@ -109,7 +109,7 @@ void SceneFSM::update(float dtime, SDL_Event *event)
 			zomboAgents[i]->setTarget(GetRandomGridPos());
 			// Ask the agent for a valid position
 			// Depending on their state they'll give a valid position (random for patrol / player pos for chase / etc)
-
+			
 			zomboAgents[i]->calculatedAlgorithm = false; // F
 		}
 
@@ -248,19 +248,18 @@ void SceneFSM::InitEnemies()
 		for (int i = 0; i < zomboAgents.size(); i++)
 		{
 			// randomize starting position
-			while (!maze->isValidCell(rand_cell))
+			if (!maze->isValidCell(rand_cell))
 				rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 
 			zomboAgents[i]->setPosition(maze->cell2pix(rand_cell));
 
 			// We reset the value of "rand_cell":
-			rand_cell = Vector2D(-1, -1);
+			//rand_cell = Vector2D(-1, -1);
 
 			// randomize enemy target
 			//zomboAgents[i]->setTarget(zomboAgents[i]->getPosition());
 			//zomboAgents[i]->setTarget(GetRandomGridPos());
 		}
-
 		return;
 	}
 

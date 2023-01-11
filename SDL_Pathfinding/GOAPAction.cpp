@@ -37,27 +37,27 @@ void GOAPAction::SetCost(float _cost)
 	cost = _cost;
 }
 
-GOAPWorldState GOAPAction::GetPreconditions()
+/*GOAPWorldState GOAPAction::GetPreconditions()
 {
 	return preconditions;
-}
+}*/
 
 bool GOAPAction::GetPreconditionValue(int index)
 {
 	return preconditions.GetValue().find((SceneElements)index)->second; // find() retorna una pair, i el second de la pair és un bool
 }
 
-GOAPWorldState GOAPAction::GetEffect()
+/*GOAPWorldState GOAPAction::GetEffect()
 {
 	return effects;
-}
+}*/
 
 bool GOAPAction::GetEffectValue(int index)
 {
 	return effects.GetValue().find((SceneElements)index)->second;
 }
 
-Vector2D GOAPAction::GetElementPosition()
+/*Vector2D GOAPAction::GetElementPosition()
 {
 	return elementPosition;
 }
@@ -70,7 +70,7 @@ Vector2D GOAPAction::GetElementCell()
 float GOAPAction::GetCost()
 {
 	return cost;
-}
+}*/
 
 void GOAPAction::Update(Agent* agent, float dTime)
 {

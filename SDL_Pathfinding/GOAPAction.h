@@ -4,6 +4,7 @@
 
 class GOAPAction
 {
+public:
 	GOAPWorldState preconditions;
 	GOAPWorldState effects;
 
@@ -12,7 +13,6 @@ class GOAPAction
 
 	float cost = 1.f;
 
-public:
 	// std::vector<GOAPAction*> neighbourActions;
 
 	void SetPreconditions(GOAPWorldState _preconditions);
@@ -23,13 +23,13 @@ public:
 	void SetElementCell(Vector2D _elementCell);
 	void SetCost(float _cost);
 
-	GOAPWorldState GetPreconditions();
+	//GOAPWorldState GetPreconditions();
 	bool GetPreconditionValue(int index);
-	GOAPWorldState GetEffect();
+	//GOAPWorldState GetEffect();
 	bool GetEffectValue(int index);
-	Vector2D GetElementPosition();
-	Vector2D GetElementCell();
-	float GetCost();
+	//Vector2D GetElementPosition();
+	//Vector2D GetElementCell();
+	//float GetCost();
 
 	virtual void Update(Agent* agent, float dTime);
 };

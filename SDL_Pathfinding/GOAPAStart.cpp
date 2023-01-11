@@ -45,43 +45,41 @@ void GOAPAStar::AStarAlgorithm()
 	tempStatesFrontier.push(startingWorldState);
 	costSoFar[startingWorldState] = 0.0f; // Seems legit
 	
-	// From here:
-	currentAction = startingAction;//->SetEffect(*startingWorldState);
+	currentWorldState = startingWorldState;
 
 	while (!tempStatesFrontier.empty())
 	{
-		//std::cout << "Temp States Frontier Size: " << tempStatesFrontier.size() << std::endl;
-		currentAction->SetEffect(*tempStatesFrontier.front());
+		currentWorldState = tempStatesFrontier.front();
 		tempStatesFrontier.pop();
 
-		auto found = currentAction->preconditions.value.find(SceneElements::Coin);
-		if (found != currentAction->preconditions.value.end() && found->second) // NEVER ENTERS
+		auto goalIt = currentWorldState->value.find(SceneElements::Coin);
+		bool foundEnd = goalIt != currentWorldState->value.end() && goalIt->second;
+		if (foundEnd) // NEVER ENTERS
 		{
 			std::cout << "EARLY EXIT" << std::endl;
 			break;
 		}
 
-		auto stateNeighbours = GetWorldStateNeighbours(&currentAction->effects);
+		// Mirar si el que retorna te sentit!!!!!!!!!!
+		auto stateNeighbours = GetWorldStateNeighbours(currentWorldState); // POT NO ESTAR DONANT ESTATS ACTUALITZATS
 
 		for (int index = 0; index < stateNeighbours.size(); index++)
 		{
-			if (cameFrom.find(stateNeighbours[index].first) == cameFrom.end())
+			float newCost = costSoFar[currentWorldState] + stateNeighbours[index].second->cost;
+
+			if (cameFrom.find(stateNeighbours[index].first) == cameFrom.end() || newCost < costSoFar[stateNeighbours[index].first])
 			{
-				float newCost = costSoFar[&currentAction->effects] + stateNeighbours[index].second->cost;
+				costSoFar[stateNeighbours[index].first] = newCost;
+				priority = newCost; // + Heuristic(goalWorldState, awto[index].second);
 
-				if (cameFrom.find(stateNeighbours[index].first) == cameFrom.end() || newCost < costSoFar[stateNeighbours[index].first])
-				{
-					costSoFar[stateNeighbours[index].first] = newCost;
-					priority = newCost; // + Heuristic(goalWorldState, awto[index].second);
+				stateNeighbours[index].second->SetCost(priority);
+				tempStatesFrontier.push(stateNeighbours[index].first); // KEEPS ADDING STUFF
+				std::cout << tempStatesFrontier.size() << std::endl;
 
-					stateNeighbours[index].second->SetCost(priority);
-					tempStatesFrontier.push(stateNeighbours[index].first); // KEEPS ADDING STUFF
-
-					cameFrom[stateNeighbours[index].first].second = currentAction;
-				}
-
-				++exploredNodes;
+				cameFrom[stateNeighbours[index].first] = std::pair<GOAPWorldState*, GOAPAction*>(currentWorldState, stateNeighbours[index].second);
 			}
+
+			++exploredNodes;
 		}
 	}
 
@@ -96,7 +94,7 @@ void GOAPAStar::AStarAlgorithm()
 	planToGoal.push_back(startingAction);
 	std::reverse(planToGoal.begin(), planToGoal.end());
 
-	std::cout << "Nº of explored actions: " << exploredNodes << std::endl;
+	std::cout << "Number of explored actions: " << exploredNodes << std::endl;
 }
 
 std::vector<std::pair<GOAPWorldState*, GOAPAction*>> GOAPAStar::GetWorldStateNeighbours(GOAPWorldState* _worldState)
@@ -107,20 +105,15 @@ std::vector<std::pair<GOAPWorldState*, GOAPAction*>> GOAPAStar::GetWorldStateNei
 	{
 		bool isSameState = true;
 
-		for (auto it = goapActions[i]->preconditions.value.begin(); it != goapActions[i]->preconditions.value.end(); ++it) 																					 
+		//per cada clau del diccionari goapActions[i]->preconditions.value comprovem que el valor sigui igual al de la mateixa clau en _worldState->value
+		for (int j = SceneElements::RedKey; j < SceneElements::Count - 1; j++)
 		{
-			auto iterator = _worldState->value.find(it->first);
-
-			//per cada clau del diccionari goapActions[i]->preconditions.value comprovem que el valor sigui igual al de la mateixa clau en _worldState->value
-			for (int j = SceneElements::RedKey; j < SceneElements::Count - 1; j++)
+			if (goapActions[i]->preconditions.value.find((SceneElements)j) != goapActions[i]->preconditions.value.end())
 			{
-				if (goapActions[i]->preconditions.value.find((SceneElements)j) != goapActions[i]->preconditions.value.end())
+				if (_worldState->value.find((SceneElements)j)->second != goapActions[i]->preconditions.value.find((SceneElements)j)->second)
 				{
-					if (_worldState->value.find((SceneElements)j)->second != goapActions[i]->preconditions.value.find((SceneElements)j)->second)
-					{
-						isSameState = false;
-						break;
-					}
+					isSameState = false;
+					break;
 				}
 			}
 		}

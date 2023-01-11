@@ -41,7 +41,7 @@ SceneGOAP::SceneGOAP()
 
 	// Initialize World State
 	currentWorldState = new GOAPWorldState();
-	for (int i = 0; i < SceneElements::Count - 1; i++)
+	for (int i = 0; i < SceneElements::Count; i++)
 	{
 		currentWorldState->SetValueElement(i, false);
 	}
@@ -55,7 +55,7 @@ SceneGOAP::SceneGOAP()
 
 	// Initialize GOAP Actions:
 	goapActions = std::vector<GOAPAction*>();
-	for (int i = SceneElements::RedKey; i < SceneElements::Coin - 1; i++)
+	for (int i = SceneElements::RedKey; i < SceneElements::Coin; i++)
 	{
 		Color color = (Color)maze->getCellValue(keyPositions[i]);
 

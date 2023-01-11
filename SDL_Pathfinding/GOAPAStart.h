@@ -27,7 +27,7 @@ public:
 
 	// World States
 	//std::vector<GOAPWorldState*> neighbourWorldStates;
-	//GOAPWorldState* currentWorldState;
+	GOAPWorldState* currentWorldState;
 	//GOAPWorldState* targetWorldState;
 	GOAPWorldState* goalWorldState;
 	GOAPWorldState* startingWorldState;

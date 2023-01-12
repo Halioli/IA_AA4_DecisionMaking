@@ -54,14 +54,14 @@ void GOAPAStar::AStarAlgorithm()
 
 		auto goalIt = currentWorldState->value.find(SceneElements::Coin);
 		bool foundEnd = goalIt != currentWorldState->value.end() && goalIt->second;
-		if (foundEnd) // NEVER ENTERS
+		if (foundEnd)
 		{
 			std::cout << "EARLY EXIT" << std::endl;
 			break;
 		}
 
-		// Retorna size = 0
-		auto stateNeighbours = GetWorldStateNeighbours(currentWorldState); // POT NO ESTAR DONANT ESTATS ACTUALITZATS
+		// NEEDS TO ADD A PRECONDITION TO NOT HAVE KEY TO GET KEY (THIS MIGHT SOLVE THE INFINITE LOOP)
+		auto stateNeighbours = GetWorldStateNeighbours(currentWorldState);
 
 		for (int index = 0; index < stateNeighbours.size(); index++)
 		{
@@ -116,9 +116,8 @@ std::vector<std::pair<GOAPWorldState*, GOAPAction*>> GOAPAStar::GetWorldStateNei
 					break;
 				}
 			}
-			else if (goapActions[i]->preconditions.value.size() == 0) // Key is in black zone so it doesn't need any key
+			else if (goapActions[i]->preconditions.value.size() == 0) // Key is in black zone so it doesn't have any precondition values
 			{
-				isSameState = false;
 				break;
 			}
 		}

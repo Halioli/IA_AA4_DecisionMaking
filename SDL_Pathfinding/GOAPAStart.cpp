@@ -56,11 +56,10 @@ void GOAPAStar::AStarAlgorithm()
 		bool foundEnd = goalIt != currentWorldState->value.end() && goalIt->second;
 		if (foundEnd)
 		{
-			std::cout << "EARLY EXIT" << std::endl;
+			std::cout << "EARLY EXIT!" << std::endl;
 			break;
 		}
 
-		// NEEDS TO ADD A PRECONDITION TO NOT HAVE KEY TO GET KEY (THIS MIGHT SOLVE THE INFINITE LOOP)
 		auto stateNeighbours = GetWorldStateNeighbours(currentWorldState);
 
 		for (int index = 0; index < stateNeighbours.size(); index++)
@@ -73,8 +72,7 @@ void GOAPAStar::AStarAlgorithm()
 				priority = newCost; // + Heuristic(goalWorldState, awto[index].second);
 
 				stateNeighbours[index].second->SetCost(priority);
-				tempStatesFrontier.push(stateNeighbours[index].first); // KEEPS ADDING STUFF
-				std::cout << tempStatesFrontier.size() << std::endl;
+				tempStatesFrontier.push(stateNeighbours[index].first);
 
 				cameFrom[stateNeighbours[index].first] = std::pair<GOAPWorldState*, GOAPAction*>(currentWorldState, stateNeighbours[index].second);
 			}
@@ -83,13 +81,14 @@ void GOAPAStar::AStarAlgorithm()
 		}
 	}
 
-	planToGoal.push_back(currentAction);
+	planToGoal.push_back(cameFrom[currentWorldState].second);
 
-	while (currentAction && (currentAction != startingAction))
+	while (cameFrom[currentWorldState].second && (cameFrom[currentWorldState].second != cameFrom[startingWorldState].second))
 	{
-		currentAction = cameFrom.find(&currentAction->effects)->second.second;
-		planToGoal.push_back(currentAction);
+		currentWorldState = cameFrom[currentWorldState].first;
+		planToGoal.push_back(cameFrom[currentWorldState].second);
 	}
+	// Adds NULL at some point causing the error
 
 	planToGoal.push_back(startingAction);
 	std::reverse(planToGoal.begin(), planToGoal.end());

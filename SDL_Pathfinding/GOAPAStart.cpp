@@ -116,6 +116,11 @@ std::vector<std::pair<GOAPWorldState*, GOAPAction*>> GOAPAStar::GetWorldStateNei
 					break;
 				}
 			}
+			else if (goapActions[i]->preconditions.value.size() == 0) // Key is in black zone so it doesn't need any key
+			{
+				isSameState = false;
+				break;
+			}
 		}
 
 		if (isSameState)

@@ -60,7 +60,7 @@ void GOAPAStar::AStarAlgorithm()
 			break;
 		}
 
-		// Mirar si el que retorna te sentit!!!!!!!!!!
+		// Retorna size = 0
 		auto stateNeighbours = GetWorldStateNeighbours(currentWorldState); // POT NO ESTAR DONANT ESTATS ACTUALITZATS
 
 		for (int index = 0; index < stateNeighbours.size(); index++)

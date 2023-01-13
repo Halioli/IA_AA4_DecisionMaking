@@ -46,6 +46,7 @@ void GOAPAStar::AStarAlgorithm()
 	costSoFar[startingWorldState] = 0.0f; // Seems legit
 	
 	currentWorldState = startingWorldState;
+	bool foundEnd = false;
 
 	while (!tempStatesFrontier.empty())
 	{
@@ -53,7 +54,7 @@ void GOAPAStar::AStarAlgorithm()
 		tempStatesFrontier.pop();
 
 		auto goalIt = currentWorldState->value.find(SceneElements::Coin);
-		bool foundEnd = goalIt != currentWorldState->value.end() && goalIt->second;
+		foundEnd = goalIt != currentWorldState->value.end() && goalIt->second;
 		if (foundEnd)
 		{
 			std::cout << "EARLY EXIT!" << std::endl;
@@ -81,19 +82,24 @@ void GOAPAStar::AStarAlgorithm()
 		}
 	}
 
-	planToGoal.push_back(cameFrom[currentWorldState].second);
-
-	while (cameFrom[currentWorldState].second && (cameFrom[currentWorldState].second != cameFrom[startingWorldState].second))
+	if (foundEnd)
 	{
-		currentWorldState = cameFrom[currentWorldState].first;
 		planToGoal.push_back(cameFrom[currentWorldState].second);
+
+		while (cameFrom[currentWorldState].second && (cameFrom[currentWorldState].second != cameFrom[startingWorldState].second))
+		{
+			currentWorldState = cameFrom[currentWorldState].first;
+			if (cameFrom[currentWorldState].first != NULL)
+				planToGoal.push_back(cameFrom[currentWorldState].second);
+		}
+
+		planToGoal.push_back(startingAction);
+		std::reverse(planToGoal.begin(), planToGoal.end());
 	}
-	// Adds NULL at some point causing the error
-
-	planToGoal.push_back(startingAction);
-	std::reverse(planToGoal.begin(), planToGoal.end());
-
-	std::cout << "Number of explored actions: " << exploredNodes << std::endl;
+	else
+	{
+		std::cout << "CANNOT REACH COIN" << std::endl;
+	}
 }
 
 std::vector<std::pair<GOAPWorldState*, GOAPAction*>> GOAPAStar::GetWorldStateNeighbours(GOAPWorldState* _worldState)

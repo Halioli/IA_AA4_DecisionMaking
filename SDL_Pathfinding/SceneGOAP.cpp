@@ -50,7 +50,7 @@ SceneGOAP::SceneGOAP()
 	keyElements = std::vector<KeyElement*>();
 	for (int i = SceneElements::RedKey; i < SceneElements::Count - 1; i++)
 	{
-		keyElements.push_back(new KeyElement(keyPositions[i], maze->pix2cell(keyPositions[i]), (SceneElements)i));
+		keyElements.push_back(new KeyElement(maze->cell2pix(keyPositions[i]), keyPositions[i], (SceneElements)i));
 	}
 
 	// Initialize GOAP Actions:
@@ -67,8 +67,8 @@ SceneGOAP::SceneGOAP()
 		goapActions[i - 2]->SetEffectValue(keyElements[i - 2]->keyColor, true);
 		goapActions[i - 2]->preconditions.SetValueElement(i, false);
 
-		goapActions[i - 2]->elementPosition = keyPositions[i];
-		goapActions[i - 2]->elementCell = maze->pix2cell(keyPositions[i]);
+		goapActions[i - 2]->elementPosition = maze->cell2pix(keyPositions[i]);
+		goapActions[i - 2]->elementCell = keyPositions[i];
 	}
 
 	// Initialize Coin Action:
@@ -79,8 +79,8 @@ SceneGOAP::SceneGOAP()
 	coinAction->preconditions.SetValueElement(SceneElements::Coin, false); // Can't get coin if has coin
 	coinAction->effects.SetValueElement(SceneElements::Coin, true); // Gives coin upon picking it up
 
-	coinAction->elementPosition = coinPosition; // Set coin position
-	coinAction->elementCell = maze->pix2cell(coinPosition); // Set coin cell position
+	coinAction->elementPosition = maze->cell2pix(coinPosition); // Set coin position
+	coinAction->elementCell = coinPosition; // Set coin cell position
 	goapActions.push_back(coinAction); // Add coinAction to goapActions
 
 	// Initialize GOAP A*:
@@ -118,10 +118,9 @@ void SceneGOAP::update(float dtime, SDL_Event *event)
 			// Call do GOAP A*
 			goapAStar->AStarAlgorithm();
 
-			std::cout << "Plan to goal size: " << goapAStar->planToGoal.size() << std::endl;
 			for (int i = 0; i < goapAStar->planToGoal.size(); i++)
 			{
-				agents[0]->addPathPoint(goapAStar->planToGoal[i]->elementPosition); // KABOOM!!!
+				agents[0]->addPathPoint(goapAStar->planToGoal[i]->elementPosition);
 			}
 		}
 		break;

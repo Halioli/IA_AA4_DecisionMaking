@@ -37,12 +37,14 @@ void AStar::AStarAlgorithm(PathFindingGraph* graph)
 	cameFrom[startingNode] = NULL;
 	costSoFar[startingNode] = 0.f;
 
+	// From here:
 	current = startingNode;
 
 	while (!tempFrontier.empty())
 	{
 		current = tempFrontier.top();
 		tempFrontier.pop();
+
 		if (current->GetPos() == goal->GetPos())
 			break;
 

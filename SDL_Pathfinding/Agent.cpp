@@ -1,4 +1,5 @@
 #include "Agent.h"
+#include "FSM.h"
 
 using namespace std;
 
@@ -41,6 +42,11 @@ Vector2D Agent::getTarget()
 	return target;
 }
 
+void Agent::setTarget(Vector2D _target)
+{
+	target = _target;
+}
+
 Vector2D Agent::getVelocity()
 {
 	return velocity;
@@ -64,11 +70,6 @@ float Agent::getMass()
 void Agent::setPosition(Vector2D _position)
 {
 	position = _position;
-}
-
-void Agent::setTarget(Vector2D _target)
-{
-	target = _target;
 }
 
 void Agent::setVelocity(Vector2D _velocity)
@@ -195,4 +196,34 @@ bool Agent::loadSpriteTexture(char* filename, int _num_frames)
 		SDL_FreeSurface(image);
 
 	return true;
+}
+
+void Agent::SetDecisionMakingAlgorithm(DecisionMakingAlgorithm newDecisionMakingAlgorithm)
+{
+	decisionMakingAlgorithm = newDecisionMakingAlgorithm;
+}
+
+Agent* Agent::GetTargetAgent()
+{
+	return targetAgent;
+}
+
+void Agent::SetTargetAgent(Agent* targAgent)
+{
+	targAgent = targAgent;
+}
+
+bool Agent::GetHasWeapon()
+{
+	return hasWeapon;
+}
+
+void Agent::SetHasWeapon(bool val)
+{
+	hasWeapon = val;
+}
+
+float Agent::GetDistanceTreshold()
+{
+	return distanceThreshold;
 }

@@ -3,9 +3,8 @@
 #include <SDL_image.h>
 
 #include "SDL_SimpleApp.h"
-#include "ScenePathFindingMouse.h"
-#include "ScenePathfindingAA3.h"
-#include "SalesmanProblem.h"
+#include "SceneFSM.h"
+#include "SceneGOAP.h"
 
 using namespace std;
 
@@ -25,7 +24,7 @@ int main(int argc, char ** argv)
 	
 	SDL_SimpleApp *app = SDL_SimpleApp::Instance();
 
-	Scene *curr_scene = new ScenePathFindingMouse;
+	Scene *curr_scene = new SceneFSM;
 	app->setWindowTitle(curr_scene->getTitle());
 
 	
@@ -46,19 +45,13 @@ int main(int argc, char ** argv)
 			if (event.key.keysym.scancode == SDL_SCANCODE_1)
 			{
 				delete(curr_scene);
-				curr_scene = new ScenePathFindingMouse;
+				curr_scene = new SceneFSM;
 				app->setWindowTitle(curr_scene->getTitle());
 			}
 			if (event.key.keysym.scancode == SDL_SCANCODE_2)
 			{
 				delete(curr_scene);
-				curr_scene = new ScenePathFindingAA3;
-				app->setWindowTitle(curr_scene->getTitle());
-			}
-			if (event.key.keysym.scancode == SDL_SCANCODE_3)
-			{
-				delete(curr_scene);
-				curr_scene = new SalesmanProblem;
+				curr_scene = new SceneGOAP;
 				app->setWindowTitle(curr_scene->getTitle());
 			}
 			if ((event.key.keysym.scancode == SDL_SCANCODE_Q) || (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))

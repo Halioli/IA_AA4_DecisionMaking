@@ -1,9 +1,9 @@
+#pragma once
 #include "SceneGOAP.h"
+#include "KeyElement.h"
+#include "GOAPAStart.h"
 
 using namespace std;
-
-enum Color { White=0, Black, Red, Orange, Yellow, Green, Blue, Purple};
-char *color_strings[8] = {"White", "Black", "Red", "Orange", "Yellow", "Green", "Blue", "Purple"};
 
 SceneGOAP::SceneGOAP()
 {
@@ -21,24 +21,73 @@ SceneGOAP::SceneGOAP()
 	agents.push_back(agent);
 
 	// set agent position coords to the center of a random cell in the Black room
-	Vector2D rand_cell(-1,-1);
+	Vector2D rand_cell(-1, -1);
 	while ((!maze->isValidCell(rand_cell)) || (maze->getCellValue(rand_cell) != Color::Black))
 		rand_cell = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	agents[0]->setPosition(maze->cell2pix(rand_cell));
 
 	// set the coin in a random cell (but not in the Black room)
-	coinPosition = Vector2D(-1,-1);
+	coinPosition = Vector2D(-1, -1);
 	while ((!maze->isValidCell(coinPosition)) || (maze->getCellValue(coinPosition) == Color::Black))
 		coinPosition = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 
 	// set keys in in a random cell (but not in the room of its same color)
-	for (int i=Color::Red; i<8; i++)
+	for (int i = Color::Red; i < 8; i++)
 	{
-		keyPositions[i] = Vector2D(-1,-1);
+		keyPositions[i] = Vector2D(-1, -1);
 		while ((!maze->isValidCell(keyPositions[i])) || (maze->getCellValue(keyPositions[i]) == i))
 			keyPositions[i] = Vector2D((float)(rand() % maze->getNumCellX()), (float)(rand() % maze->getNumCellY()));
 	}
 
+	// Initialize World State
+	currentWorldState = new GOAPWorldState();
+	for (int i = 0; i < SceneElements::Count; i++)
+	{
+		currentWorldState->SetValueElement(i, false);
+	}
+
+	// Initialize Key States:
+	keyElements = std::vector<KeyElement*>();
+	for (int i = SceneElements::RedKey; i < SceneElements::Count - 1; i++)
+	{
+		keyElements.push_back(new KeyElement(maze->cell2pix(keyPositions[i]), keyPositions[i], (SceneElements)i));
+	}
+
+	// Initialize GOAP Actions:
+	goapActions = std::vector<GOAPAction*>();
+	for (int i = SceneElements::RedKey; i < SceneElements::Coin; i++)
+	{
+		Color color = (Color)maze->getCellValue(keyPositions[i]);
+
+		goapActions.push_back(new GOAPAction());
+
+		if (color != Color::Black)
+			goapActions[i - 2]->SetPreconditionValue(color, true);
+
+		goapActions[i - 2]->SetEffectValue(keyElements[i - 2]->keyColor, true);
+		goapActions[i - 2]->preconditions.SetValueElement(i, false);
+
+		goapActions[i - 2]->elementPosition = maze->cell2pix(keyPositions[i]);
+		goapActions[i - 2]->elementCell = keyPositions[i];
+	}
+
+	// Initialize Coin Action:
+	GOAPAction* coinAction = new GOAPAction();
+	if ((Color)maze->getCellValue(coinPosition) != Color::Black)
+		coinAction->SetPreconditionValue((Color)maze->getCellValue(coinPosition), true);
+
+	coinAction->preconditions.SetValueElement(SceneElements::Coin, false); // Can't get coin if has coin
+	coinAction->effects.SetValueElement(SceneElements::Coin, true); // Gives coin upon picking it up
+
+	coinAction->elementPosition = maze->cell2pix(coinPosition); // Set coin position
+	coinAction->elementCell = coinPosition; // Set coin cell position
+	goapActions.push_back(coinAction); // Add coinAction to goapActions
+
+	// Initialize GOAP A*:
+	goapAStar = new GOAPAStar(goapActions, currentWorldState);
+	GOAPWorldState* goalWS = new GOAPWorldState();
+	goalWS->SetValueElement(SceneElements::Coin, true);
+	goapAStar->goalWorldState = goalWS;
 }
 
 SceneGOAP::~SceneGOAP()
@@ -61,6 +110,19 @@ void SceneGOAP::update(float dtime, SDL_Event *event)
 	case SDL_KEYDOWN:
 		if (event->key.keysym.scancode == SDL_SCANCODE_SPACE)
 			draw_grid = !draw_grid;
+		else if (event->key.keysym.scancode == SDL_SCANCODE_G)
+		{
+			goapAStar->startingAction->elementPosition = agents[0]->getPosition();
+			goapAStar->startingAction->elementCell = maze->pix2cell(agents[0]->getPosition());
+
+			// Call do GOAP A*
+			goapAStar->AStarAlgorithm();
+
+			for (int i = 0; i < goapAStar->planToGoal.size(); i++)
+			{
+				agents[0]->addPathPoint(goapAStar->planToGoal[i]->elementPosition);
+			}
+		}
 		break;
 	case SDL_MOUSEMOTION:
 	case SDL_MOUSEBUTTONDOWN:
@@ -88,7 +150,7 @@ void SceneGOAP::update(float dtime, SDL_Event *event)
 			// nothing to do here but clear the coin position (set coinPosition to -1,-1)
 			coinPosition = Vector2D(-1,-1);
 		}
-		for (int i=Color::Red; i<8; i++)
+		for (int i = SceneElements::RedKey; i < SceneElements::Count - 1; i++)
 		{
 			if (maze->pix2cell(agents[0]->getPosition()) == keyPositions[i])
 			{
@@ -98,7 +160,6 @@ void SceneGOAP::update(float dtime, SDL_Event *event)
 			}
 		}
 	}
-	
 }
 
 void SceneGOAP::draw()
@@ -193,7 +254,7 @@ void SceneGOAP::drawCoin()
 		SDL_RenderCopy(TheApp::Instance()->getRenderer(), coin_texture, NULL, &dstrect);
 	}
 
-	for (int i=Color::Red; i<8; i++)
+	for (int i = Color::Red; i < 8; i++)
 	{
 		if (!maze->isValidCell(keyPositions[i])) continue;
 		Vector2D key_coords = maze->cell2pix(keyPositions[i]);

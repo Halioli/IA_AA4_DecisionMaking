@@ -144,7 +144,15 @@
     <ClCompile Include="FSMState_Chase.cpp" />
     <ClCompile Include="FSMState_Evade.cpp" />
     <ClCompile Include="FSMState_Patrol.cpp" />
+    <ClCompile Include="GOAP.cpp" />
+    <ClCompile Include="GOAPAction.cpp" />
+    <ClCompile Include="GOAPAction_Aim.cpp" />
+    <ClCompile Include="GOAPAction_Patrol.cpp" />
+    <ClCompile Include="GOAPAction_Shoot.cpp" />
+    <ClCompile Include="GOAPAStart.cpp" />
+    <ClCompile Include="GOAPWorldState.cpp" />
     <ClCompile Include="GreedyBFS.cpp" />
+    <ClCompile Include="KeyElement.cpp" />
     <ClCompile Include="PathFindingAlgorithm.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="main.cpp" />
@@ -152,6 +160,7 @@
     <ClCompile Include="PathFindingGraph.cpp" />
     <ClCompile Include="PathFollowing.cpp" />
     <ClCompile Include="SalesmanProblem.cpp" />
+    <ClCompile Include="SceneElements.cpp" />
     <ClCompile Include="SceneFSM.cpp" />
     <ClCompile Include="SceneGOAP.cpp" />
     <ClCompile Include="ScenePathFindingAA3.cpp" />
@@ -176,7 +185,15 @@
     <ClInclude Include="FSMState_Chase.h" />
     <ClInclude Include="FSMState_Evade.h" />
     <ClInclude Include="FSMState_Patrol.h" />
+    <ClInclude Include="GOAP.h" />
+    <ClInclude Include="GOAPAction.h" />
+    <ClInclude Include="GOAPAction_Aim.h" />
+    <ClInclude Include="GOAPAction_Patrol.h" />
+    <ClInclude Include="GOAPAction_Shoot.h" />
+    <ClInclude Include="GOAPAStart.h" />
+    <ClInclude Include="GOAPWorldState.h" />
     <ClInclude Include="GreedyBFS.h" />
+    <ClInclude Include="KeyElement.h" />
     <ClInclude Include="PathFindingAlgorithm.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Node.h" />
@@ -185,6 +202,7 @@
     <ClInclude Include="PathFollowing.h" />
     <ClInclude Include="SalesmanProblem.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneElements.h" />
     <ClInclude Include="SceneFSM.h" />
     <ClInclude Include="SceneGOAP.h" />
     <ClInclude Include="ScenePathFindingAA3.h" />
